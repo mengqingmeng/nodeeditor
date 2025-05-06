@@ -1,4 +1,4 @@
-#include <QtNodes/DataFlowGraphicsScene>
+﻿#include <QtNodes/DataFlowGraphicsScene>
 #include <QtNodes/GraphicsView>
 #include <QtNodes/NodeDelegateModelRegistry>
 
@@ -11,6 +11,7 @@
 
 #include "DataFlowModel.hpp"
 #include "DelegateNodeModel.hpp"
+#include <QCheckBox>
 
 using QtNodes::DataFlowGraphicsScene;
 using QtNodes::GraphicsView;
@@ -31,17 +32,6 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     DataFlowModel graphModel(registerDataModels());
-
-    // Initialize and connect two nodes.
-    {
-        NodeId id1 = graphModel.addNode(SimpleNodeData().type().id);
-        graphModel.setNodeData(id1, NodeRole::Position, QPointF(0, 0));
-
-        NodeId id2 = graphModel.addNode(SimpleNodeData().type().id);
-        graphModel.setNodeData(id2, NodeRole::Position, QPointF(300, 300));
-
-        graphModel.addConnection(ConnectionId{id1, 0, id2, 0});
-    }
 
     auto scene = new DataFlowGraphicsScene(graphModel);
 
@@ -65,11 +55,11 @@ int main(int argc, char *argv[])
     vbl->addStretch();
     groupBox->setLayout(vbl);
 
-    QObject::connect(cb1, &QCheckBox::stateChanged, [&graphModel](int state) {
+    QObject::connect(cb1, &QCheckBox::checkStateChanged, [&graphModel](Qt::CheckState state) {
         graphModel.setNodesLocked(state == Qt::Checked);
     });
 
-    QObject::connect(cb2, &QCheckBox::stateChanged, [&graphModel](int state) {
+    QObject::connect(cb2, &QCheckBox::checkStateChanged, [&graphModel](Qt::CheckState state) {
         graphModel.setDetachPossible(state == Qt::Checked);
     });
 

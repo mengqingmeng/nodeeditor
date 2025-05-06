@@ -1,4 +1,4 @@
-#include "TextSourceDataModel.hpp"
+﻿#include "TextSourceDataModel.hpp"
 
 #include <QtWidgets/QLineEdit>
 

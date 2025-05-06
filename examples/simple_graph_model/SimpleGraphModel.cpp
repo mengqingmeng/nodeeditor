@@ -1,4 +1,4 @@
-#include "SimpleGraphModel.hpp"
+﻿#include "SimpleGraphModel.hpp"
 
 SimpleGraphModel::SimpleGraphModel()
     : _nextNodeId{0}
@@ -291,4 +291,18 @@ void SimpleGraphModel::loadNode(QJsonObject const &nodeJson)
 
         setNodeData(restoredNodeId, NodeRole::Position, pos);
     }
+}
+
+QPointF SimpleGraphModel::nodesCenter() const
+{
+    QPointF sum;
+    if(_nodeGeometryData.empty()) return sum;
+
+    for (const auto& pair : _nodeGeometryData) {
+        NodeGeometryData nodeGeoData = pair.second;
+        QPointF point = nodeGeoData.pos;
+        sum += point;
+    }
+
+    return sum/_nodeGeometryData.size();
 }

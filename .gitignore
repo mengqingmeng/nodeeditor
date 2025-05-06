@@ -5,3 +5,8 @@ build*/
 .vscode/
 
 tags
+
+install/
+out/
+build/
+.vs

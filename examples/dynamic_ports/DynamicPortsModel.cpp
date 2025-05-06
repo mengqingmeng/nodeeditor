@@ -90,6 +90,7 @@ bool DynamicPortsModel::nodeExists(NodeId const nodeId) const
 PortAddRemoveWidget *DynamicPortsModel::widget(NodeId nodeId) const
 {
     auto it = _nodeWidgets.find(nodeId);
+    // 没找到，新建
     if (it == _nodeWidgets.end()) {
         _nodeWidgets[nodeId] = new PortAddRemoveWidget(0,
                                                        0,
@@ -195,6 +196,7 @@ bool DynamicPortsModel::setNodeData(NodeId nodeId, NodeRole role, QVariant value
         break;
 
     case NodeRole::Widget:
+        qDebug() << "setNodeData of Widget Type";
         break;
     }
 

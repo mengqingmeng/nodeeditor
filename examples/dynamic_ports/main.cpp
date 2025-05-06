@@ -94,6 +94,8 @@ QAction *createNodeAction(DynamicPortsModel &graphModel, GraphicsView &view)
 
         NodeId const newId = graphModel.addNode();
         graphModel.setNodeData(newId, NodeRole::Position, posView);
+        graphModel.setNodeData(newId, NodeRole::InPortCount, 2);
+        graphModel.setNodeData(newId, NodeRole::OutPortCount, 2);
     });
 
     return action;
@@ -106,9 +108,9 @@ int main(int argc, char *argv[])
     DynamicPortsModel graphModel;
 
     // Initialize and connect two nodes.
-    initializeModel(graphModel);
+    //initializeModel(graphModel);
 
-    // Main app window holding menu and a scene view.
+    //// Main app window holding menu and a scene view.
     QWidget window;
     window.setWindowTitle("Dynamic Nodes Example");
     window.resize(800, 600);

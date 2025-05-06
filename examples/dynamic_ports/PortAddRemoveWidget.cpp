@@ -1,4 +1,4 @@
-#include "PortAddRemoveWidget.hpp"
+﻿#include "PortAddRemoveWidget.hpp"
 
 #include "DynamicPortsModel.hpp"
 
@@ -43,14 +43,14 @@ void PortAddRemoveWidget::populateButtons(PortType portType, unsigned int nPorts
 
     // we use [-1} in the expression `vl->count() - 1` because
     // one element - a spacer - is alvays present in this layout.
-
-    if (vl->count() - 1 < nPorts)
-        while (vl->count() - 1 < nPorts) {
+    unsigned int vlCount = static_cast<unsigned int>((vl->count() - 1));
+    if (vlCount < nPorts)
+        while (vlCount < nPorts) {
             addButtonGroupToLayout(vl, 0);
         }
 
-    if (vl->count() - 1 > nPorts) {
-        while (vl->count() - 1 > nPorts) {
+    if (vlCount > nPorts) {
+        while (vlCount > nPorts) {
             removeButtonGroupFromLayout(vl, 0);
         }
     }

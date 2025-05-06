@@ -522,11 +522,6 @@ void DataFlowGraphModel::onOutPortDataUpdated(NodeId const nodeId, PortIndex con
     }
 }
 
-void DataFlowGraphModel::propagateEmptyDataTo(NodeId const nodeId, PortIndex const portIndex)
-{
-    QVariant emptyData{};
 
-    setPortData(nodeId, PortType::In, portIndex, emptyData, PortRole::Data);
-}
 
 } // namespace QtNodes

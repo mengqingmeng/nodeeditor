@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "AbstractGraphModel.hpp"
 #include "ConnectionIdUtils.hpp"
@@ -118,7 +118,12 @@ private Q_SLOTS:
     void onOutPortDataUpdated(NodeId const nodeId, PortIndex const portIndex);
 
     /// Function is called after detaching a connection.
-    void propagateEmptyDataTo(NodeId const nodeId, PortIndex const portIndex);
+    void propagateEmptyDataTo(NodeId const nodeId, PortIndex const portIndex)
+    {
+        QVariant emptyData{};
+
+        setPortData(nodeId, PortType::In, portIndex, emptyData, PortRole::Data);
+    }
 
 private:
     std::shared_ptr<NodeDelegateModelRegistry> _registry;

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QtCore/QJsonObject>
 #include <QtCore/QPointF>
@@ -19,11 +19,21 @@ using PortType = QtNodes::PortType;
 using StyleCollection = QtNodes::StyleCollection;
 using QtNodes::InvalidNodeId;
 
+#include <QtNodes/DataFlowGraphModel>
+
+using QtNodes::ConnectionId;
+using QtNodes::DataFlowGraphModel;
+using QtNodes::NodeDelegateModelRegistry;
+using QtNodes::NodeFlag;
+using QtNodes::NodeFlags;
+using QtNodes::NodeId;
+
+
 /**
  * The class implements a bare minimum required to demonstrate a model-based
  * graph.
  */
-class SimpleGraphModel : public QtNodes::AbstractGraphModel
+class SimpleGraphModel : public QtNodes::DataFlowGraphModel
 {
     Q_OBJECT
 public:
@@ -90,6 +100,12 @@ public:
 
     NodeId newNodeId() override { return _nextNodeId++; }
 
+    /**
+     * @brief nodesCenter 获取节点的中心点
+     * @return 节点的中心
+     */
+    QPointF nodesCenter() const;
+
 private:
     std::unordered_set<NodeId> _nodeIds;
 
@@ -105,5 +121,5 @@ private:
     mutable std::unordered_map<NodeId, NodeGeometryData> _nodeGeometryData;
 
     /// A convenience variable needed for generating unique node ids.
-    unsigned int _nextNodeId;
+    NodeId _nextNodeId;
 };

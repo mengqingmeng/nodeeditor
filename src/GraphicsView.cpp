@@ -1,4 +1,4 @@
-#include "GraphicsView.hpp"
+﻿#include "GraphicsView.hpp"
 
 #include "BasicGraphicsScene.hpp"
 #include "ConnectionGraphicsObject.hpp"
@@ -93,6 +93,7 @@ void GraphicsView::setScene(BasicGraphicsScene *scene)
         _deleteSelectionAction = new QAction(QStringLiteral("Delete Selection"), this);
         _deleteSelectionAction->setShortcutContext(Qt::ShortcutContext::WidgetShortcut);
         _deleteSelectionAction->setShortcut(QKeySequence(QKeySequence::Delete));
+        _deleteSelectionAction->setAutoRepeat(false);
         connect(_deleteSelectionAction,
                 &QAction::triggered,
                 this,
@@ -106,6 +107,7 @@ void GraphicsView::setScene(BasicGraphicsScene *scene)
         _duplicateSelectionAction = new QAction(QStringLiteral("Duplicate Selection"), this);
         _duplicateSelectionAction->setShortcutContext(Qt::ShortcutContext::WidgetShortcut);
         _duplicateSelectionAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_D));
+        _duplicateSelectionAction->setAutoRepeat(false);
         connect(_duplicateSelectionAction,
                 &QAction::triggered,
                 this,
@@ -119,6 +121,7 @@ void GraphicsView::setScene(BasicGraphicsScene *scene)
         _copySelectionAction = new QAction(QStringLiteral("Copy Selection"), this);
         _copySelectionAction->setShortcutContext(Qt::ShortcutContext::WidgetShortcut);
         _copySelectionAction->setShortcut(QKeySequence(QKeySequence::Copy));
+        _copySelectionAction->setAutoRepeat(false);
         connect(_copySelectionAction,
                 &QAction::triggered,
                 this,
@@ -132,6 +135,7 @@ void GraphicsView::setScene(BasicGraphicsScene *scene)
         _pasteAction = new QAction(QStringLiteral("Copy Selection"), this);
         _pasteAction->setShortcutContext(Qt::ShortcutContext::WidgetShortcut);
         _pasteAction->setShortcut(QKeySequence(QKeySequence::Paste));
+        _pasteAction->setAutoRepeat(false);
         connect(_pasteAction, &QAction::triggered, this, &GraphicsView::onPasteObjects);
 
         addAction(_pasteAction);
@@ -158,6 +162,21 @@ void GraphicsView::centerScene()
         }
 
         centerOn(sceneRect.center());
+    }
+}
+
+void GraphicsView::centerScene(const QPointF &pos)
+{
+    if (scene()) {
+        scene()->setSceneRect(QRectF());
+
+        QRectF sceneRect = scene()->sceneRect();
+
+        if (sceneRect.width() > this->rect().width() || sceneRect.height() > this->rect().height()) {
+            fitInView(sceneRect, Qt::KeepAspectRatio);
+        }
+
+        centerOn(pos);
     }
 }
 

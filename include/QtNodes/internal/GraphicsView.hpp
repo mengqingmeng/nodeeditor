@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QtWidgets/QGraphicsView>
 
@@ -35,6 +35,12 @@ public:
     void setScene(BasicGraphicsScene *scene);
 
     void centerScene();
+
+    /**
+     * @brief centerScene 根据点进行场景居中
+     * @param pos 居中
+     */
+    void centerScene(const QPointF &pos);
 
     /// @brief max=0/min=0 indicates infinite zoom in/out
     void setScaleRange(double minimum = 0, double maximum = 0);
