@@ -1,9 +1,9 @@
-﻿cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.8)
 
 cmake_policy(SET CMP0072 NEW) # new in 3.11. The NEW behavior for this policy is to set OpenGL_GL_PREFERENCE to GLVND.
 cmake_policy(SET CMP0068 NEW) # new in 3.9. The NEW behavior of this policy is to ignore the RPATH settings for install_name on macOS.
 
-# 手动指定构建工具ninja
+# mac系统下设置ninja路径
 if(APPLE)
     set(CMAKE_MAKE_PROGRAM "/opt/homebrew/bin/ninja" CACHE INTERNAL "")
 endif()
@@ -32,6 +32,7 @@ option(BUILD_DOCS "Build Documentation" "${QT_NODES_DEVELOPER_DEFAULTS}")
 option(BUILD_SHARED_LIBS "Build as shared library" ON)
 option(BUILD_DEBUG_POSTFIX_D "Append d suffix to debug libraries" OFF)
 option(QT_NODES_FORCE_TEST_COLOR "Force colorized unit test output" OFF)
+option(USE_QT6 "Build with Qt6 (Enabled by default)" ON)
 
 enable_testing()
 
@@ -50,7 +51,12 @@ endif()
 
 add_subdirectory(external)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
+if(USE_QT6)
+  find_package(QT NAMES Qt6 REQUIRED COMPONENTS Widgets)
+else()
+  find_package(QT NAMES Qt5 REQUIRED COMPONENTS Widgets)
+endif()
+
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets Gui OpenGL)
 message(STATUS "QT_VERSION: ${QT_VERSION}, QT_DIR: ${QT_DIR}")
 
@@ -73,21 +79,21 @@ set(CPP_SOURCE_FILES
   src/AbstractNodeGeometry.cpp
   src/BasicGraphicsScene.cpp
   src/ConnectionGraphicsObject.cpp
-  src/ConnectionPainter.cpp
   src/ConnectionState.cpp
   src/ConnectionStyle.cpp
   src/DataFlowGraphModel.cpp
   src/DataFlowGraphicsScene.cpp
+  src/DefaultConnectionPainter.cpp
   src/DefaultHorizontalNodeGeometry.cpp
+  src/DefaultNodePainter.cpp
   src/DefaultVerticalNodeGeometry.cpp
   src/Definitions.cpp
   src/GraphicsView.cpp
   src/GraphicsViewStyle.cpp
-  src/NodeDelegateModelRegistry.cpp
   src/NodeConnectionInteraction.cpp
   src/NodeDelegateModel.cpp
+  src/NodeDelegateModelRegistry.cpp
   src/NodeGraphicsObject.cpp
-  src/DefaultNodePainter.cpp
   src/NodeState.cpp
   src/NodeStyle.cpp
   src/StyleCollection.cpp
@@ -96,6 +102,7 @@ set(CPP_SOURCE_FILES
 )
 
 set(HPP_HEADER_FILES
+  include/QtNodes/internal/AbstractConnectionPainter.hpp
   include/QtNodes/internal/AbstractGraphModel.hpp
   include/QtNodes/internal/AbstractNodeGeometry.hpp
   include/QtNodes/internal/AbstractNodePainter.hpp
@@ -108,7 +115,6 @@ set(HPP_HEADER_FILES
   include/QtNodes/internal/ConnectionStyle.hpp
   include/QtNodes/internal/DataFlowGraphicsScene.hpp
   include/QtNodes/internal/DataFlowGraphModel.hpp
-  include/QtNodes/internal/DefaultNodePainter.hpp
   include/QtNodes/internal/Definitions.hpp
   include/QtNodes/internal/Export.hpp
   include/QtNodes/internal/GraphicsView.hpp
@@ -126,12 +132,12 @@ set(HPP_HEADER_FILES
   include/QtNodes/internal/Serializable.hpp
   include/QtNodes/internal/Style.hpp
   include/QtNodes/internal/StyleCollection.hpp
-
-  src/ConnectionPainter.hpp
-  src/DefaultHorizontalNodeGeometry.hpp
-  src/DefaultVerticalNodeGeometry.hpp
-  src/NodeConnectionInteraction.hpp
-  src/UndoCommands.hpp
+  include/QtNodes/internal/DefaultConnectionPainter.hpp
+  include/QtNodes/internal/DefaultHorizontalNodeGeometry.hpp
+  include/QtNodes/internal/DefaultNodePainter.hpp
+  include/QtNodes/internal/DefaultVerticalNodeGeometry.hpp
+  include/QtNodes/internal/NodeConnectionInteraction.hpp
+  include/QtNodes/internal/UndoCommands.hpp
 )
 
 # If we want to give the option to build a static library,
@@ -164,7 +170,7 @@ target_link_libraries(QtNodes
 
 target_compile_definitions(QtNodes
   PUBLIC
-    NODE_EDITOR_SHARED
+    $<IF:$<BOOL:${BUILD_SHARED_LIBS}>, NODE_EDITOR_SHARED, NODE_EDITOR_STATIC>
   PRIVATE
     NODE_EDITOR_EXPORTS
     #NODE_DEBUG_DRAWING

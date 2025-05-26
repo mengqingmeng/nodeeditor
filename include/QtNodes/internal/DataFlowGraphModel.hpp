@@ -43,8 +43,8 @@ public:
 
     NodeId addNode(QString const nodeType) override;
 
-    /// @brief ÊÇ·ñ¿ÉÁ¬½Ó
-    /// @param connectionId  Á¬½Óid
+    /// @brief æ˜¯å¦å¯è¿æ¥
+    /// @param connectionId  è¿æ¥id
     /// @return 
     bool connectionPossible(ConnectionId const connectionId) const override;
 
@@ -102,6 +102,10 @@ Q_SIGNALS:
 
 private:
     NodeId newNodeId() override { return _nextNodeId++; }
+
+    void sendConnectionCreation(ConnectionId const connectionId);
+
+    void sendConnectionDeletion(ConnectionId const connectionId);
 
 private Q_SLOTS:
     /**

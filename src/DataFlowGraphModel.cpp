@@ -15,9 +15,7 @@ DataFlowGraphModel::DataFlowGraphModel(std::shared_ptr<NodeDelegateModelRegistry
 std::unordered_set<NodeId> DataFlowGraphModel::allNodeIds() const
 {
     std::unordered_set<NodeId> nodeIds;
-    for_each(_models.begin(), _models.end(), [&nodeIds](auto const &p) {
-        nodeIds.insert(p.first);
-    });
+    for_each(_models.begin(), _models.end(), [&nodeIds](auto const &p) { nodeIds.insert(p.first); });
 
     return nodeIds;
 }
@@ -128,9 +126,6 @@ bool DataFlowGraphModel::connectionPossible(ConnectionId const connectionId) con
         return connected.empty() || (policy == ConnectionPolicy::Many);
     };
 
-    // TODO: 1. 环路不可链接
-    // TODO: 2. 输入输出类型不可链接
-    // TODO: 3. 链接策略判定
     //std::unique_ptr<NodeDelegateModel> model = _models[]
     QString outId = getDataType(PortType::Out).id;
     QString inId = getDataType(PortType::In).id;
@@ -143,7 +138,7 @@ void DataFlowGraphModel::addConnection(ConnectionId const connectionId)
 {
     _connectivity.insert(connectionId);
 
-    Q_EMIT connectionCreated(connectionId);
+    sendConnectionCreation(connectionId);
 
     QVariant const portDataToPropagate = portData(connectionId.outNodeId,
                                                   PortType::Out,
@@ -155,6 +150,34 @@ void DataFlowGraphModel::addConnection(ConnectionId const connectionId)
                 connectionId.inPortIndex,
                 portDataToPropagate,
                 PortRole::Data);
+}
+
+void DataFlowGraphModel::sendConnectionCreation(ConnectionId const connectionId)
+{
+    Q_EMIT connectionCreated(connectionId);
+
+    auto iti = _models.find(connectionId.inNodeId);
+    auto ito = _models.find(connectionId.outNodeId);
+    if (iti != _models.end() && ito != _models.end()) {
+        auto &modeli = iti->second;
+        auto &modelo = ito->second;
+        modeli->inputConnectionCreated(connectionId);
+        modelo->outputConnectionCreated(connectionId);
+    }
+}
+
+void DataFlowGraphModel::sendConnectionDeletion(ConnectionId const connectionId)
+{
+    Q_EMIT connectionDeleted(connectionId);
+
+    auto iti = _models.find(connectionId.inNodeId);
+    auto ito = _models.find(connectionId.outNodeId);
+    if (iti != _models.end() && ito != _models.end()) {
+        auto &modeli = iti->second;
+        auto &modelo = ito->second;
+        modeli->inputConnectionDeleted(connectionId);
+        modelo->outputConnectionDeleted(connectionId);
+    }
 }
 
 bool DataFlowGraphModel::nodeExists(NodeId const nodeId) const
@@ -368,7 +391,7 @@ bool DataFlowGraphModel::deleteConnection(ConnectionId const connectionId)
     }
 
     if (disconnected) {
-        Q_EMIT connectionDeleted(connectionId);
+        sendConnectionDeletion(connectionId);
 
         propagateEmptyDataTo(getNodeId(PortType::In, connectionId),
                              getPortIndex(PortType::In, connectionId));

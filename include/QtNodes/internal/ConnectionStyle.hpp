@@ -38,12 +38,12 @@ public:
 
     bool useDataDefinedColors() const;
 
-    /// @brief ÊäÈë¼ıÍ·ÑùÊ½ÊÇ·ñ¿ªÆô
-    /// @return true:¿ªÆô£¬false:¹Ø±Õ
+    /// @brief è¾“å…¥ç®­å¤´æ ·å¼æ˜¯å¦å¼€å¯
+    /// @return true:å¼€å¯ï¼Œfalse:å…³é—­
     bool inArrow() const;
 
-    /// @brief Êä³ö¼ıÍ·ÑùÊ½ÊÇ·ñ¿ªÆô
-    /// @return true:¿ªÆô£¬false:¹Ø±Õ
+    /// @brief è¾“å‡ºç®­å¤´æ ·å¼æ˜¯å¦å¼€å¯
+    /// @return true:å¼€å¯ï¼Œfalse:å…³é—­
     bool outArrow() const;
 
 private:
@@ -55,14 +55,16 @@ private:
 
     float LineWidth;
     float ConstructionLineWidth;
+
+    /// @brief åœ†åœˆç›´å¾„
     float PointDiameter;
 
     bool UseDataDefinedColors;
 
-    /// @brief ÊäÈë¼ıÍ·ÑùÊ½ÊÇ·ñ¿ªÆô
+    /// @brief è¾“å…¥ç®­å¤´æ ·å¼æ˜¯å¦å¼€å¯
     bool InArrow;
 
-    /// @brief Êä³ö¼ıÍ·ÑùÊ½ÊÇ·ñ¿ªÆô
+    /// @brief è¾“å‡ºç®­å¤´æ ·å¼æ˜¯å¦å¼€å¯
     bool OutArrow;
 };
 } // namespace QtNodes
