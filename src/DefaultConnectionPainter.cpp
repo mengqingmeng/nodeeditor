@@ -194,9 +194,12 @@ void DefaultConnectionPainter::paint(QPainter *painter, ConnectionGraphicsObject
 
     double const pointDiameter = connectionStyle.pointDiameter();
 
-    painter->setPen(connectionStyle.constructionColor());
-    painter->setBrush(connectionStyle.constructionColor());
-    double const pointRadius = pointDiameter / 2.0;
+    painter->setPen(connectionStyle.normalColor());
+    painter->setBrush(connectionStyle.normalColor());
+    //double const pointRadius = pointDiameter / 2.0;
+
+    // 设置半径为0，让箭头紧贴节点
+    double const pointRadius = 0.0f;
     if (connectionStyle.outArrow()) {
         auto out = createArrowPoly(cubic, pointRadius, pointDiameter * 1.5, false);
         painter->drawPolygon(out);

@@ -1,7 +1,7 @@
 ﻿#include <QtNodes/DataFlowGraphicsScene>
 #include <QtNodes/GraphicsView>
 #include <QtNodes/NodeDelegateModelRegistry>
-
+#include <QtNodes/ConnectionStyle>
 #include <QAction>
 #include <QScreen>
 #include <QtWidgets/QApplication>
@@ -11,7 +11,7 @@
 
 #include "DataFlowModel.hpp"
 #include "DelegateNodeModel.hpp"
-
+using QtNodes::ConnectionStyle;
 using QtNodes::DataFlowGraphicsScene;
 using QtNodes::GraphicsView;
 using QtNodes::NodeDelegateModelRegistry;
@@ -29,6 +29,17 @@ static std::shared_ptr<NodeDelegateModelRegistry> registerDataModels()
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+
+     ConnectionStyle::setConnectionStyle(
+        R"(
+  {
+    "ConnectionStyle": {
+      "InArrow" : true,
+      "OutArrow" : false,
+      "ConstructionColor":"darkcyan"
+    }
+  }
+  )");
 
     DataFlowModel graphModel(registerDataModels());
     
@@ -62,6 +73,10 @@ int main(int argc, char *argv[])
 
     QObject::connect(cb2, &QCheckBox::stateChanged, [&graphModel](int state) {
         graphModel.setDetachPossible(state == Qt::Checked);
+    });
+
+    QObject::connect(scene, &DataFlowGraphicsScene::nodeClicked, [&](NodeId const nodeId) {
+        qDebug() << "node clicked:" << nodeId;    
     });
 
     l->addWidget(groupBox);

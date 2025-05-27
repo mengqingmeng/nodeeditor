@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 
     std::shared_ptr<NodeDelegateModelRegistry> registry = registerDataModels();
     DataFlowGraphModel dataFlowGraphModel(registry);
-
+    
     DataFlowGraphicsScene scene(dataFlowGraphModel);
 
     GraphicsView view(&scene);
