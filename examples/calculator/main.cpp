@@ -32,13 +32,13 @@ static std::shared_ptr<NodeDelegateModelRegistry> registerDataModels()
 
     ret->registerModel<NumberDisplayDataModel>("Displays");
 
-    ret->registerModel<AdditionModel>("Operators");
+    ret->registerModel<AdditionModel>("Add Operator");
 
-    ret->registerModel<SubtractionModel>("Operators");
+    ret->registerModel<SubtractionModel>("Subtract Operator");
 
-    ret->registerModel<MultiplicationModel>("Operators");
+    ret->registerModel<MultiplicationModel>("Multi Operator");
 
-    ret->registerModel<DivisionModel>("Operators");
+    ret->registerModel<DivisionModel>("Div Operator");
 
     return ret;
 }

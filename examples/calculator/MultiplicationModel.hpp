@@ -14,13 +14,14 @@
 class MultiplicationModel : public MathOperationDataModel
 {
 public:
-    MultiplicationModel(){}
+    MultiplicationModel(){ _operationType = "x";
+    }
     MultiplicationModel(const QString &name,
                            const QString &caption = "default caption",
                            const QString &category = "default category",
                            unsigned int inCount = 1,
                         unsigned int outCount = 1): MathOperationDataModel(name, caption, category,inCount,outCount){
-
+        _operationType = "x";
     }
     virtual ~MultiplicationModel() {}
 

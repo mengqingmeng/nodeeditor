@@ -13,7 +13,7 @@
 class DivisionModel : public MathOperationDataModel
 {
 public:
-    DivisionModel(){}
+    DivisionModel(){ _operationType = "/"; }
     DivisionModel(const QString &name,
                 const QString &caption = "default caption",
                 const QString &category = "default category",
@@ -21,6 +21,7 @@ public:
                 int outCount = 1)
         : MathOperationDataModel(name, caption, category,inCount,outCount)
     {
+        _operationType = "/";
     }
     virtual ~DivisionModel() {}
 

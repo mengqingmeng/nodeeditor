@@ -13,13 +13,17 @@
 class AdditionModel : public MathOperationDataModel
 {
 public:
-    AdditionModel(){}
+    AdditionModel()
+    { _operationType = "+";
+    }
     AdditionModel(const QString &name,
                                 const QString &caption = "default caption",
                                 const QString &category = "default category",
                                 int inCount = 1,
                                 int outCount = 1)
-        : MathOperationDataModel(name, caption, category,inCount,outCount){}
+        : MathOperationDataModel(name, caption, category,inCount,outCount){
+        _operationType = "Add";
+    }
     ~AdditionModel() = default;
 
 public:

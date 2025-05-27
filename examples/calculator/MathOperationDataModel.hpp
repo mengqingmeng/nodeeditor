@@ -23,13 +23,13 @@ class MathOperationDataModel : public NodeDelegateModel
     Q_OBJECT
 
 public:
-    MathOperationDataModel(){}
+    MathOperationDataModel();
+
     MathOperationDataModel(const QString &name,
-                  const QString &caption = "default caption",
-                  const QString &category = "default category",
-                  int inCount = 1,
-                  int outCount = 1)
-        : NodeDelegateModel(name, caption, category,inCount,outCount){}
+                           const QString &caption = "default caption",
+                           const QString &category = "default category",
+                           int inCount = 1,
+                           int outCount = 1);
 
     ~MathOperationDataModel() = default;
 
@@ -42,7 +42,7 @@ public:
 
     void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
-    QWidget *embeddedWidget() override { return nullptr; }
+    QWidget *embeddedWidget() override;
 
 protected:
     virtual void compute() = 0;
@@ -52,4 +52,8 @@ protected:
     std::weak_ptr<DecimalData> _number2;
 
     std::shared_ptr<DecimalData> _result;
+
+    QLabel *_label;
+
+    QString _operationType;
 };

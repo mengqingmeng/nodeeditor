@@ -11,6 +11,16 @@ NumberSourceDataModel::NumberSourceDataModel()
     , _number(std::make_shared<DecimalData>(0.0))
 {}
 
+NumberSourceDataModel::NumberSourceDataModel(const QString &name,
+                                             const QString &caption,
+                                             const QString &category,
+                                             unsigned int inCount,
+                                             unsigned int outCount)
+    : NodeDelegateModel(name, caption, category, inCount, outCount)
+    ,_lineEdit{nullptr}
+    , _number(std::make_shared<DecimalData>(0.0))
+{}
+
 QJsonObject NumberSourceDataModel::save() const
 {
     QJsonObject modelJson = NodeDelegateModel::save();

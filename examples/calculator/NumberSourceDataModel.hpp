@@ -25,10 +25,10 @@ class NumberSourceDataModel : public NodeDelegateModel
 public:
     NumberSourceDataModel();
     NumberSourceDataModel(const QString &name,
-                   const QString &caption = "default caption",
-                   const QString &category = "default category",
-                   unsigned int inCount = 1,
-                   unsigned int outCount = 1): NodeDelegateModel(name, caption, category,inCount,outCount){}
+                          const QString &caption = "default caption",
+                          const QString &category = "default category",
+                          unsigned int inCount = 1,
+                          unsigned int outCount = 1);
     virtual ~NumberSourceDataModel() {}
 
 public:

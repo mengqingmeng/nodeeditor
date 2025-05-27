@@ -2,6 +2,18 @@
 
 #include "DecimalData.hpp"
 
+MathOperationDataModel::MathOperationDataModel():_label(nullptr) {}
+
+
+MathOperationDataModel::MathOperationDataModel(const QString &name,
+                                               const QString &caption,
+                                               const QString &category,
+                                               int inCount,
+                                               int outCount)
+    : NodeDelegateModel(
+    name, caption, category, inCount, outCount),_label(nullptr)
+{}
+
 unsigned int MathOperationDataModel::nPorts(PortType portType) const
 {
     unsigned int result;
@@ -39,4 +51,13 @@ void MathOperationDataModel::setInData(std::shared_ptr<NodeData> data, PortIndex
     }
 
     compute();
+}
+
+QWidget* MathOperationDataModel::embeddedWidget() {
+    if (!_label) {
+        _label = new QLabel(_operationType);
+        _label->setMargin(3);
+    }
+
+    return _label;
 }

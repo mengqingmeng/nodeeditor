@@ -2,13 +2,15 @@
 
 #include <QtWidgets/QLabel>
 
-NumberDisplayDataModel::NumberDisplayDataModel(){}
+NumberDisplayDataModel::NumberDisplayDataModel() :_label{nullptr} {}
 
 NumberDisplayDataModel::NumberDisplayDataModel(const QString &name,
                                                const QString &caption,
                                                const QString &category,
                                                unsigned int inCount,
-                                               unsigned int outCount): NodeDelegateModel(name, caption, category,inCount,outCount){}
+                                               unsigned int outCount):
+    NodeDelegateModel(name, caption, category, inCount, outCount),_label{nullptr}
+{}
 
 unsigned int NumberDisplayDataModel::nPorts(PortType portType) const
 {

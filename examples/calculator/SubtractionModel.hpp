@@ -14,13 +14,15 @@
 class SubtractionModel : public MathOperationDataModel
 {
 public:
-    SubtractionModel(){}
+    SubtractionModel() { _operationType = "/"; }
     SubtractionModel(const QString &name,
                    const QString &caption = "default caption",
                    const QString &category = "default category",
                    unsigned int inCount = 1,
-                   unsigned int outCount = 1): MathOperationDataModel(name, caption, category,inCount,outCount){}
-    virtual ~SubtractionModel() {}
+                   unsigned int outCount = 1): MathOperationDataModel(name, caption, category,inCount,outCount){
+        _operationType = "/"; 
+    }
+    virtual ~SubtractionModel() { }
 
 public:
 
