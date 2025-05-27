@@ -1,5 +1,4 @@
 #include <QtNodes/DataFlowGraphModel>
-#include <QtNodes/Definitions>
 
 using QtNodes::ConnectionId;
 using QtNodes::DataFlowGraphModel;
@@ -7,6 +6,8 @@ using QtNodes::NodeDelegateModelRegistry;
 using QtNodes::NodeFlag;
 using QtNodes::NodeFlags;
 using QtNodes::NodeId;
+using QtNodes::PortType;
+using QtNodes::NodeDataType;
 
 class DataFlowModel : public DataFlowGraphModel
 {
@@ -43,40 +44,11 @@ public:
     }
 
     
-    /// @brief  «∑Òø…¡¨Ω”
-    /// @param connectionId  ¡¨Ω”id
+    /// @brief ÊòØÂê¶ÂèØËøûÊé•
+    /// @param connectionId  ËøûÊé•id
     /// @return
     bool connectionPossible(ConnectionId const connectionId) const override {
-        // ªÒ»°∂Àø⁄ ˝æ›¿‡–Õ
-        auto getDataType = [&](PortType const portType) {
-            return portData(getNodeId(portType, connectionId),
-                            portType,
-                            getPortIndex(portType, connectionId),
-                            PortRole::DataType)
-                .value<NodeDataType>();
-        };
-
-        // ªÒ»°¡¨Ω”≤ﬂ¬‘
-        auto portVacant = [&](PortType const portType) {
-            NodeId const nodeId = getNodeId(portType, connectionId);
-            PortIndex const portIndex = getPortIndex(portType, connectionId);
-            auto const connected = connections(nodeId, portType, portIndex);
-
-            auto policy = portData(nodeId, portType, portIndex, PortRole::ConnectionPolicyRole)
-                              .value<ConnectionPolicy>();
-
-            return connected.empty() || (policy == ConnectionPolicy::Many);
-        };
-
-        // TODO: 1. ª∑¬∑≤ªø…¡¥Ω”
-        // TODO: 2.  ‰»Î ‰≥ˆ¿‡–Õ≤ªø…¡¥Ω”
-        // TODO: 3. ¡¥Ω”≤ﬂ¬‘≈–∂®
-        //std::unique_ptr<NodeDelegateModel> model = _models[]
-        QString outId = getDataType(PortType::Out).id;
-        QString inId = getDataType(PortType::In).id;
-        auto outPort = portVacant(PortType::Out);
-        auto inPort = portVacant(PortType::In);
-        return outId == inId && outPort && inPort;
+        return !connectionLoop(connectionId);
     }
 
 private:

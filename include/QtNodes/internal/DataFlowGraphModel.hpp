@@ -9,8 +9,11 @@
 #include "Export.hpp"
 
 #include <QJsonObject>
+#include <QVariant>
 
 #include <memory>
+#include <QMap>
+#include <QSet>
 
 namespace QtNodes {
 
@@ -42,6 +45,11 @@ public:
     bool connectionExists(ConnectionId const connectionId) const override;
 
     NodeId addNode(QString const nodeType) override;
+
+    /// @brief 判断连接是否形成回环
+    /// @param connectionId 连接id
+    /// @return true:形成环路；false:开路
+    bool connectionLoop(ConnectionId const connectionId) const;
 
     /// @brief 是否可连接
     /// @param connectionId  连接id
@@ -133,6 +141,16 @@ private:
     std::unordered_set<ConnectionId> _connectivity;
 
     mutable std::unordered_map<NodeId, NodeGeometryData> _nodeGeometryData;
+
+    /// @brief 节点的下游节点
+    std::unordered_map<NodeId, std::set<NodeId>> _nodeChildrens;
+
+    /// @brief 判断是否形成DFS环路
+    /// @param current 下游节点id（输入）
+    /// @param target 上有节点id（输出）
+    /// @return true:形成环路；false:开路
+    bool hasCycleReverseDFS(const NodeId current,
+                     const NodeId target);
 };
 
 } // namespace QtNodes

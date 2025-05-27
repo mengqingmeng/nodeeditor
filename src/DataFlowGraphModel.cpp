@@ -103,6 +103,23 @@ NodeId DataFlowGraphModel::addNode(QString const nodeType)
     return InvalidNodeId;
 }
 
+bool DataFlowGraphModel::connectionLoop(ConnectionId const connectionId) const {
+    NodeId inNodeId = connectionId.inNodeId;
+    NodeId outNodeId = connectionId.outNodeId;
+    if (inNodeId == outNodeId) // 未和上下节点连接时，两者相等。不判定是否回环
+        return false;
+
+    /*QSet<NodeId> visited, recursionStack;
+
+    visited.insert(inNodeId);
+    recursionStack.insert(inNodeId);*/
+
+
+
+    qDebug() << "in node id:" << inNodeId << ";out node id:" << outNodeId;
+    return false;
+}
+
 bool DataFlowGraphModel::connectionPossible(ConnectionId const connectionId) const
 {
     // 获取端口数据类型
@@ -129,6 +146,7 @@ bool DataFlowGraphModel::connectionPossible(ConnectionId const connectionId) con
     //std::unique_ptr<NodeDelegateModel> model = _models[]
     QString outId = getDataType(PortType::Out).id;
     QString inId = getDataType(PortType::In).id;
+
     auto outPort = portVacant(PortType::Out);
     auto inPort = portVacant(PortType::In);
     return outId == inId && outPort && inPort;
@@ -150,6 +168,20 @@ void DataFlowGraphModel::addConnection(ConnectionId const connectionId)
                 connectionId.inPortIndex,
                 portDataToPropagate,
                 PortRole::Data);
+
+    // 维护节点的子节点
+    if (_nodeChildrens.count(connectionId.outNodeId)) { // 已经存在
+        _nodeChildrens[connectionId.outNodeId].insert(connectionId.inNodeId);
+    } else { // 不存在
+        _nodeChildrens.insert(
+            {
+                connectionId.outNodeId,
+                {
+                    connectionId.inNodeId
+                }
+            }
+        );
+    }
 }
 
 void DataFlowGraphModel::sendConnectionCreation(ConnectionId const connectionId)
@@ -395,6 +427,14 @@ bool DataFlowGraphModel::deleteConnection(ConnectionId const connectionId)
 
         propagateEmptyDataTo(getNodeId(PortType::In, connectionId),
                              getPortIndex(PortType::In, connectionId));
+
+        // 移除子项
+        if (_nodeChildrens.count(connectionId.outNodeId)) {
+            auto childIt = _nodeChildrens[connectionId.outNodeId].find(connectionId.inNodeId);
+            if (childIt != _nodeChildrens[connectionId.outNodeId].end()) {
+                _nodeChildrens[connectionId.outNodeId].erase(childIt);
+            }
+        }
     }
 
     return disconnected;
@@ -535,6 +575,16 @@ void DataFlowGraphModel::propagateEmptyDataTo(NodeId const nodeId, PortIndex con
     QVariant emptyData{};
 
     setPortData(nodeId, PortType::In, portIndex, emptyData, PortRole::Data);
+}
+
+bool DataFlowGraphModel::hasCycleReverseDFS(const NodeId current,
+    const NodeId target)
+{
+    if (current == target) {
+        return true; // 发现环路
+    }
+    
+    return false;
 }
 
 } // namespace QtNodes
