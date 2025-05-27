@@ -106,7 +106,7 @@ public:
     }
 
 Q_SIGNALS:
-    void inPortDataWasSet(NodeId const, PortType const, PortIndex const);
+     void inPortDataWasSet(NodeId const, PortType const, PortIndex const);
 
 private:
     NodeId newNodeId() override { return _nextNodeId++; }
@@ -143,14 +143,18 @@ private:
     mutable std::unordered_map<NodeId, NodeGeometryData> _nodeGeometryData;
 
     /// @brief 节点的下游节点
-    std::unordered_map<NodeId, std::set<NodeId>> _nodeChildrens;
+    mutable std::unordered_map<NodeId, std::set<NodeId>> _nodeChildrens;
 
     /// @brief 判断是否形成DFS环路
     /// @param current 下游节点id（输入）
     /// @param target 上有节点id（输出）
+    /// @param visited
+    /// @param recursionStack
     /// @return true:形成环路；false:开路
-    bool hasCycleReverseDFS(const NodeId current,
-                     const NodeId target);
+    bool hasCycleDFS(const NodeId current,
+                            const NodeId target,
+                            std::unordered_set<NodeId> &visited,
+                            std::unordered_set<NodeId> &recursionStack);
 };
 
 } // namespace QtNodes

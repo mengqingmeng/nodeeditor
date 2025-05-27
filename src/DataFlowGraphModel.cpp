@@ -109,15 +109,11 @@ bool DataFlowGraphModel::connectionLoop(ConnectionId const connectionId) const {
     if (inNodeId == outNodeId) // 未和上下节点连接时，两者相等。不判定是否回环
         return false;
 
-    /*QSet<NodeId> visited, recursionStack;
-
-    visited.insert(inNodeId);
-    recursionStack.insert(inNodeId);*/
-
-
-
-    qDebug() << "in node id:" << inNodeId << ";out node id:" << outNodeId;
-    return false;
+    std::unordered_set<NodeId> visited, recursionStack;
+    return const_cast<DataFlowGraphModel*>(this)->hasCycleDFS(inNodeId,
+                                                        outNodeId,
+                                                        visited,
+                                                        recursionStack);
 }
 
 bool DataFlowGraphModel::connectionPossible(ConnectionId const connectionId) const
@@ -577,13 +573,27 @@ void DataFlowGraphModel::propagateEmptyDataTo(NodeId const nodeId, PortIndex con
     setPortData(nodeId, PortType::In, portIndex, emptyData, PortRole::Data);
 }
 
-bool DataFlowGraphModel::hasCycleReverseDFS(const NodeId current,
-    const NodeId target)
+bool DataFlowGraphModel::hasCycleDFS(const NodeId current,
+                                            const NodeId target,
+                                            std::unordered_set<NodeId> &visited,
+                                            std::unordered_set<NodeId> &recursionStack)
 {
+    // 节点无法连接自身
     if (current == target) {
-        return true; // 发现环路
+        return true;
     }
-    
+    if (recursionStack.count(current))
+        return true; // 当前路径已访问过该节点
+
+    visited.insert(current);
+    recursionStack.insert(current);
+    const std::set<NodeId> childs = _nodeChildrens[current];
+    for (NodeId child : childs) {
+        if (hasCycleDFS(child, target, visited, recursionStack)) {
+            return true;
+        }
+    }
+    recursionStack.erase(current);
     return false;
 }
 
