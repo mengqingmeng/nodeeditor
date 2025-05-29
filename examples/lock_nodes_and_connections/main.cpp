@@ -21,7 +21,7 @@ static std::shared_ptr<NodeDelegateModelRegistry> registerDataModels()
 {
     auto ret = std::make_shared<NodeDelegateModelRegistry>();
 
-    ret->registerModel<CameraModel>("Camera", "相机", "图像采集");
+    ret->registerModel<CameraModel>("Camera", "相机测试", "图像采集");
 
     return ret;
 }
@@ -32,13 +32,13 @@ int main(int argc, char *argv[])
 
      ConnectionStyle::setConnectionStyle(
         R"(
-  {
-    "ConnectionStyle": {
-      "InArrow" : true,
-      "OutArrow" : false,
-      "ConstructionColor":"darkcyan"
-    }
-  }
+            {
+            "ConnectionStyle": {
+                "InArrow" : true,
+                "OutArrow" : false,
+                "ConstructionColor":"darkcyan"
+            }
+            }
   )");
 
     DataFlowModel graphModel(registerDataModels());

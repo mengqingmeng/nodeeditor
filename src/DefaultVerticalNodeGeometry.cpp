@@ -12,7 +12,7 @@ namespace QtNodes {
 DefaultVerticalNodeGeometry::DefaultVerticalNodeGeometry(AbstractGraphModel &graphModel)
     : AbstractNodeGeometry(graphModel)
     , _portSize(20)
-    , _portSpasing(10)
+    , _portSpasing(6)
     , _fontMetrics(QFont())
     , _boldFontMetrics(QFont())
 {
@@ -36,6 +36,7 @@ void DefaultVerticalNodeGeometry::recomputeSize(NodeId const nodeId) const
         height = std::max(height, static_cast<unsigned int>(w->height()));
     }
 
+    // 标题所占矩形
     QRectF const capRect = captionRect(nodeId);
 
     height += capRect.height();
@@ -73,7 +74,7 @@ void DefaultVerticalNodeGeometry::recomputeSize(NodeId const nodeId) const
     width += _portSpasing;
     width += _portSpasing;
 
-    QSize size(width, height);
+    QSize size(width * 1.5, height);
 
     _graphModel.setNodeData(nodeId, NodeRole::Size, size);
 }
@@ -174,16 +175,20 @@ QPointF DefaultVerticalNodeGeometry::captionPosition(NodeId const nodeId) const
 QPointF DefaultVerticalNodeGeometry::widgetPosition(NodeId const nodeId) const
 {
     QSize size = _graphModel.nodeData<QSize>(nodeId, NodeRole::Size);
+    auto capRect = captionRect(nodeId);
+    unsigned int captionHeight = capRect.height();
 
-    unsigned int captionHeight = captionRect(nodeId).height();
+    auto capPos = captionPosition(nodeId);
 
     if (auto w = _graphModel.nodeData<QWidget *>(nodeId, NodeRole::Widget)) {
         // If the widget wants to use as much vertical space as possible,
         // place it immediately after the caption.
+        //unsigned int x = _portSpasing + maxPortsTextAdvance(nodeId, PortType::In);
+        unsigned int x = capPos.x() + capRect.width() / 2 - w->width() / 2.0f;
         if (w->sizePolicy().verticalPolicy() & QSizePolicy::ExpandFlag) {
-            return QPointF(_portSpasing + maxPortsTextAdvance(nodeId, PortType::In), captionHeight);
+            return QPointF(x, captionHeight);
         } else {
-            return QPointF(_portSpasing + maxPortsTextAdvance(nodeId, PortType::In),
+            return QPointF(x,
                            (captionHeight + size.height() - w->height()) / 2.0);
         }
     }
@@ -232,6 +237,7 @@ unsigned int DefaultVerticalNodeGeometry::maxPortsTextAdvance(NodeId const nodeI
 {
     unsigned int width = 0;
 
+    // 端口数量
     size_t const n = _graphModel
                          .nodeData(nodeId,
                                    (portType == PortType::Out) ? NodeRole::OutPortCount
@@ -253,6 +259,7 @@ unsigned int DefaultVerticalNodeGeometry::maxPortsTextAdvance(NodeId const nodeI
         }
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+        // 计算名称水平占用宽度
         width = std::max(unsigned(_fontMetrics.horizontalAdvance(name)), width);
 #else
         width = std::max(unsigned(_fontMetrics.width(name)), width);

@@ -6,6 +6,7 @@
 #include <QtNodes/NodeDelegateModel>
 
 #include <memory>
+#include <QLabel>
 
 using QtNodes::NodeData;
 using QtNodes::NodeDataType;
@@ -27,7 +28,9 @@ class CameraModel : public NodeDelegateModel
 
 public:
 
-    CameraModel() { 
+    CameraModel()
+        : _label(nullptr)
+    { 
         auto& style = nodeStyle();
         QColor color = style.ConnectionPointColor;
     }
@@ -37,11 +40,15 @@ public:
                     const QString &category = "default category",
                     int inCount = 1,
                     int outCount = 1)
-        : NodeDelegateModel(name, caption, category,inCount,outCount)
+        : NodeDelegateModel(name, caption, category, inCount, outCount)
+        , _label(nullptr)
     {
         auto &style = nodeStyle();
         QColor color = style.ConnectionPointColor;
     }
+
+private:
+    QLabel *_label;
 
 public:
 
@@ -65,5 +72,13 @@ public:
 
     void setInData(std::shared_ptr<NodeData>, PortIndex const) override {}
 
-    QWidget *embeddedWidget() override { return nullptr; }
+    QWidget *embeddedWidget() override
+    {
+        if (!_label) {
+            _label = new QLabel("123");
+            _label->setMargin(3);
+        }
+
+        return _label;
+    }
 };
