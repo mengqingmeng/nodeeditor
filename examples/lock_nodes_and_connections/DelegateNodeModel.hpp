@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QtCore/QObject>
 
@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <QLabel>
+#include <QPixmap>
 
 using QtNodes::NodeData;
 using QtNodes::NodeDataType;
@@ -68,7 +69,9 @@ public:
         return std::make_shared<CameraModelData>();
     }
 
-    bool portCaptionVisible(PortType, PortIndex) const override { return true; }
+    bool portCaptionVisible(PortType, PortIndex) const override {
+        return false; 
+    }
 
     void setInData(std::shared_ptr<NodeData>, PortIndex const) override {}
 
@@ -76,7 +79,15 @@ public:
     {
         if (!_label) {
             _label = new QLabel("123");
-            _label->setMargin(3);
+            _label->setStyleSheet("QLabel {"
+                                 "  background: transparent;"
+                                 "}");
+            _label->setAttribute(Qt::WA_TranslucentBackground);
+            _label->setMargin(1);
+
+            QPixmap* p = new QPixmap(":/images/images/default-operator.svg");
+
+            _label->setPixmap(p->scaled(20, 20, Qt::KeepAspectRatio,Qt::SmoothTransformation));
         }
 
         return _label;

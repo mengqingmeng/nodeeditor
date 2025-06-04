@@ -112,7 +112,7 @@ void NodeGraphicsObject::embedQWidget()
 
         //update();
 
-        _proxyWidget->setOpacity(1.0);
+        _proxyWidget->setOpacity(1.0f);
         _proxyWidget->setFlag(QGraphicsItem::ItemIgnoresParentOpacity);
     }
 }

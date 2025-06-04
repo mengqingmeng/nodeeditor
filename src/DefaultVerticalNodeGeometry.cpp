@@ -33,7 +33,8 @@ void DefaultVerticalNodeGeometry::recomputeSize(NodeId const nodeId) const
     unsigned int height = _portSpasing; // maxHorizontalPortsExtent(nodeId);
 
     if (auto w = _graphModel.nodeData<QWidget *>(nodeId, NodeRole::Widget)) {
-        height = std::max(height, static_cast<unsigned int>(w->height()));
+        //height = std::max(height, static_cast<unsigned int>(w->height()));
+        height += static_cast<unsigned int>(w->height());
     }
 
     // 标题所占矩形
@@ -74,6 +75,7 @@ void DefaultVerticalNodeGeometry::recomputeSize(NodeId const nodeId) const
     width += _portSpasing;
     width += _portSpasing;
 
+    // *1.5进行加宽
     QSize size(width * 1.5, height);
 
     _graphModel.setNodeData(nodeId, NodeRole::Size, size);
@@ -130,17 +132,17 @@ QPointF DefaultVerticalNodeGeometry::portTextPosition(NodeId const nodeId,
 
     QRectF rect = portTextRect(nodeId, portType, portIndex);
 
-    p.setX(p.x() - rect.width() / 2.0);
+    p.setX(p.x() - (rect.width() / 2.0));
 
     QSize size = _graphModel.nodeData<QSize>(nodeId, NodeRole::Size);
 
     switch (portType) {
     case PortType::In:
-        p.setY(5.0 + rect.height());
+        p.setY(rect.height());
         break;
 
     case PortType::Out:
-        p.setY(size.height() - 5.0);
+        p.setY(size.height() - _portSize/2.0);
         break;
 
     default:
@@ -188,8 +190,8 @@ QPointF DefaultVerticalNodeGeometry::widgetPosition(NodeId const nodeId) const
         if (w->sizePolicy().verticalPolicy() & QSizePolicy::ExpandFlag) {
             return QPointF(x, captionHeight);
         } else {
-            return QPointF(x,
-                           (captionHeight + size.height() - w->height()) / 2.0);
+            return QPointF(x, capPos.y() + captionHeight - w->height() / 2.0);
+                           //(captionHeight + size.height() - w->height()) / 2.0);
         }
     }
     return QPointF();
@@ -209,9 +211,15 @@ QRectF DefaultVerticalNodeGeometry::portTextRect(NodeId const nodeId,
                                                  PortIndex const portIndex) const
 {
     QString s;
-    if (_graphModel.portData<bool>(nodeId, portType, portIndex, PortRole::CaptionVisible)) {
+    /*if (_graphModel.portData<bool>(nodeId, portType, portIndex, PortRole::CaptionVisible)) {
         s = _graphModel.portData<QString>(nodeId, portType, portIndex, PortRole::Caption);
     } else {
+        auto portData = _graphModel.portData(nodeId, portType, portIndex, PortRole::DataType);
+
+        s = portData.value<NodeDataType>().name;
+    }*/
+
+    if (_graphModel.portData<bool>(nodeId, portType, portIndex, PortRole::PortCaptionVisible)) {
         auto portData = _graphModel.portData(nodeId, portType, portIndex, PortRole::DataType);
 
         s = portData.value<NodeDataType>().name;
@@ -278,7 +286,7 @@ unsigned int DefaultVerticalNodeGeometry::portCaptionsHeight(NodeId const nodeId
     case PortType::In: {
         PortCount nInPorts = _graphModel.nodeData<PortCount>(nodeId, NodeRole::InPortCount);
         for (PortIndex i = 0; i < nInPorts; ++i) {
-            if (_graphModel.portData<bool>(nodeId, PortType::In, i, PortRole::CaptionVisible)) {
+            if (_graphModel.portData<bool>(nodeId, PortType::In, i, PortRole::PortCaptionVisible)) {
                 h += _portSpasing;
                 break;
             }
@@ -289,7 +297,7 @@ unsigned int DefaultVerticalNodeGeometry::portCaptionsHeight(NodeId const nodeId
     case PortType::Out: {
         PortCount nOutPorts = _graphModel.nodeData<PortCount>(nodeId, NodeRole::OutPortCount);
         for (PortIndex i = 0; i < nOutPorts; ++i) {
-            if (_graphModel.portData<bool>(nodeId, PortType::Out, i, PortRole::CaptionVisible)) {
+            if (_graphModel.portData<bool>(nodeId, PortType::Out, i, PortRole::PortCaptionVisible)) {
                 h += _portSpasing;
                 break;
             }

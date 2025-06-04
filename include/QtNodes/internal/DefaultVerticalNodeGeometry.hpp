@@ -44,6 +44,10 @@ private:
 
     unsigned int maxPortsTextAdvance(NodeId const nodeId, PortType const portType) const;
 
+    /// @brief 计算端口标题的高度
+    /// @param nodeId 节点ID
+    /// @param portType 端口类型
+    /// @return 端口标题的高度
     unsigned int portCaptionsHeight(NodeId const nodeId, PortType const portType) const;
 
 private:

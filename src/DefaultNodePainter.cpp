@@ -244,15 +244,17 @@ void DefaultNodePainter::drawEntryLabels(QPainter *painter, NodeGraphicsObject &
 
             QString s;
 
-            if (model.portData<bool>(nodeId, portType, portIndex, PortRole::CaptionVisible)) {
+            /*if (model.portData<bool>(nodeId, portType, portIndex, PortRole::CaptionVisible)) {
                 s = model.portData<QString>(nodeId, portType, portIndex, PortRole::Caption);
-            } else {
+            } else */
+                
+            if (model.portData<bool>(nodeId, portType, portIndex, PortRole::PortCaptionVisible)) { // 端口标题不可见时，不展示端口标题
                 auto portData = model.portData(nodeId, portType, portIndex, PortRole::DataType);
-
                 s = portData.value<NodeDataType>().name;
             }
 
-            painter->drawText(p, s);
+            if (!s.isEmpty())
+                painter->drawText(p, s);
         }
     }
 }

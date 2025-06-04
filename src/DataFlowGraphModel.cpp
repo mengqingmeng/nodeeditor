@@ -364,6 +364,10 @@ QVariant DataFlowGraphModel::portData(NodeId nodeId,
         break;
 
     case PortRole::CaptionVisible:
+        result = model->captionVisible();
+        break;
+
+    case PortRole::PortCaptionVisible:
         result = model->portCaptionVisible(portType, portIndex);
         break;
 
