@@ -9,6 +9,9 @@
 #include "NodeData.hpp"
 #include "NodeStyle.hpp"
 #include "Serializable.hpp"
+#include <QLabel>
+#include <QSvgRenderer>
+#include <QPainter>
 
 namespace QtNodes {
 
@@ -93,6 +96,13 @@ public:
     virtual QWidget *embeddedWidget() = 0;
 
     virtual bool resizable() const { return false; }
+
+    /// @brief 为QLabel设置svg图片
+    /// @param label 标签
+    /// @param svgPath svg图片路径
+    /// @param size 图片大小
+    /// @param sampleFactor 采样倍率
+    void setSvgToLabel(QLabel *label, const QString &svgPath,int size = 20,int sampleFactor = 2);
 
 public Q_SLOTS:
 

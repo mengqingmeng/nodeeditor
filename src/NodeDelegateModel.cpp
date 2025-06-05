@@ -87,4 +87,59 @@ QString NodeDelegateModel::category() const
     return _category;
 }
 
+void NodeDelegateModel::setSvgToLabel(QLabel *label,
+                                      const QString &svgPath,
+                                      const int size,
+                                      int sampleFactor)
+{
+    if (!label || svgPath.isEmpty())
+        return;
+
+    //QSvgRenderer renderer(svgPath);
+    //if (!renderer.isValid())
+    //    return;
+
+    // // 计算目标尺寸（考虑HiDPI）
+    //qreal dpr = label->devicePixelRatioF();
+    //qreal targetSize = dpr * size;
+    //// 创建透明背景的Pixmap
+    //QPixmap pixmap(targetSize, targetSize);
+    //pixmap.fill(Qt::transparent); // 关键：透明背景避免白边
+    //// 使用QPainter进行抗锯齿渲染
+    //QPainter painter(&pixmap);
+    //painter.setRenderHint(QPainter::Antialiasing, true);
+    //painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+    //painter.setRenderHint(QPainter::TextAntialiasing, true);
+
+    //// 渲染SVG到Pixmap
+    //renderer.render(&painter, QRect(0, 0, targetSize, targetSize));
+    //painter.end();
+    //// 设置设备像素比
+    //pixmap.setDevicePixelRatio(dpr);
+    //label->setPixmap(pixmap);
+
+    QSvgRenderer renderer(svgPath);
+    if (!renderer.isValid())
+        return;
+    qreal dpr = label->devicePixelRatioF();
+    QSize baseSize = QSize(size,size) * dpr;
+    QSize superSampledSize = baseSize * sampleFactor;
+    // 创建超采样Pixmap
+    QPixmap superPixmap(superSampledSize);
+    superPixmap.fill(Qt::transparent);
+
+    // 大尺寸渲染
+    QPainter spPainter(&superPixmap);
+    spPainter.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+    renderer.render(&spPainter, QRect(QPoint(0, 0), superSampledSize));
+    spPainter.end();
+    // 高质量缩小
+    QPixmap finalPixmap = superPixmap.scaled(baseSize,
+                                             Qt::KeepAspectRatio,
+                                             Qt::SmoothTransformation);
+
+    finalPixmap.setDevicePixelRatio(dpr);
+    label->setPixmap(finalPixmap);
+}
+
 } // namespace QtNodes

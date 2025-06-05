@@ -81,13 +81,14 @@ public:
             _label = new QLabel("123");
             _label->setStyleSheet("QLabel {"
                                  "  background: transparent;"
+                                 "  image-rendering: smooth;"
                                  "}");
             _label->setAttribute(Qt::WA_TranslucentBackground);
+
             _label->setMargin(1);
 
-            QPixmap* p = new QPixmap(":/images/images/default-operator.svg");
 
-            _label->setPixmap(p->scaled(20, 20, Qt::KeepAspectRatio,Qt::SmoothTransformation));
+            setSvgToLabel(_label, ":/images/images/default-operator.svg");
         }
 
         return _label;
