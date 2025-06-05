@@ -48,6 +48,12 @@ public:
         QColor color = style.ConnectionPointColor;
     }
 
+    ~CameraModel() { 
+        if (_label) {
+            delete _label;
+        }
+    }
+
 private:
     QLabel *_label;
 
@@ -78,16 +84,16 @@ public:
     QWidget *embeddedWidget() override
     {
         if (!_label) {
-            _label = new QLabel("123");
+            _label = new QLabel();
             _label->setStyleSheet("QLabel {"
                                  "  background: transparent;"
                                  "}");
             _label->setAttribute(Qt::WA_TranslucentBackground);
+
             _label->setMargin(1);
 
-            QPixmap* p = new QPixmap(":/images/images/default-operator.svg");
 
-            _label->setPixmap(p->scaled(20, 20, Qt::KeepAspectRatio,Qt::SmoothTransformation));
+            setSvgToLabel(_label, ":/images/images/default-operator.svg");
         }
 
         return _label;
