@@ -87,6 +87,7 @@ public:
             _label = new QLabel();
             _label->setStyleSheet("QLabel {"
                                  "  background: transparent;"
+                                 "  image-rendering: smooth;"
                                  "}");
             _label->setAttribute(Qt::WA_TranslucentBackground);
 
