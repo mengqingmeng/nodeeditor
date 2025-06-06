@@ -116,6 +116,46 @@ bool DataFlowGraphModel::connectionLoop(ConnectionId const connectionId) const {
                                                         recursionStack);
 }
 
+bool DataFlowGraphModel::connectionTransTypeMatch(ConnectionId const connectionId) const {
+    NodeId inNodeId = connectionId.inNodeId;
+    PortIndex inPortIndex = connectionId.inPortIndex;
+    NodeId outNodeId = connectionId.outNodeId;
+    PortIndex outPortIndex = connectionId.outPortIndex;
+
+    auto inNodeIt = _models.find(inNodeId);
+    if (inNodeIt == _models.end())
+        return false;
+
+    auto outNodeIt = _models.find(outNodeId);
+    if (outNodeIt == _models.end())
+        return false;
+
+    auto &inNodeModel = inNodeIt->second;
+    auto &outNodeModel = outNodeIt->second;
+
+    if (!inNodeModel || !outNodeModel)
+        return false;
+
+
+    QSet<PortTransDataType> inPortTransDataTypes = inNodeModel->getPortTransTypes({PortType::In, inPortIndex});
+    QSet<PortTransDataType> outPortTransDataTypes = inNodeModel->getPortTransTypes(
+        {PortType::Out, outPortIndex});
+
+    if (inPortTransDataTypes.empty() || outPortTransDataTypes.empty())
+        return false;
+    
+    // 将第一个列表转换为集合（自动去重）
+    QSet<PortTransDataType> set(inPortTransDataTypes.begin(), inPortTransDataTypes.end());
+
+    // 检查第二个列表中的元素是否在集合中出现
+    for (const PortTransDataType &item : outPortTransDataTypes) {
+        if (set.contains(item)) {
+            return true; // 发现共同元素立即返回
+        }
+    }
+    return false; // 无共同元素
+}
+
 bool DataFlowGraphModel::connectionPossible(ConnectionId const connectionId) const
 {
     // 获取端口数据类型

@@ -44,10 +44,10 @@ private:
 
     unsigned int maxPortsTextAdvance(NodeId const nodeId, PortType const portType) const;
 
-    /// @brief ¼ÆËã¶Ë¿Ú±êÌâµÄ¸ß¶È
-    /// @param nodeId ½ÚµãID
-    /// @param portType ¶Ë¿ÚÀàĞÍ
-    /// @return ¶Ë¿Ú±êÌâµÄ¸ß¶È
+    /// @brief è®¡ç®—ç«¯å£æ ‡é¢˜çš„é«˜åº¦
+    /// @param nodeId èŠ‚ç‚¹ID
+    /// @param portType ç«¯å£ç±»å‹
+    /// @return ç«¯å£æ ‡é¢˜çš„é«˜åº¦
     unsigned int portCaptionsHeight(NodeId const nodeId, PortType const portType) const;
 
 private:

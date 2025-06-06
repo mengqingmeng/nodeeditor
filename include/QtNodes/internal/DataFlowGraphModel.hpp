@@ -51,6 +51,11 @@ public:
     /// @return true:形成环路；false:开路
     bool connectionLoop(ConnectionId const connectionId) const;
 
+    /// @brief 判断连接的两端数据传输类型是否吻合
+    /// @param connectionId 连接id
+    /// @return true:有相同的数据传输类型；false:无相同的数据传输类型
+    bool connectionTransTypeMatch(ConnectionId const connectionId) const;
+
     /// @brief 是否可连接
     /// @param connectionId  连接id
     /// @return 

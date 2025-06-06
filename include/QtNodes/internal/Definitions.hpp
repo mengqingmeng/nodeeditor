@@ -5,6 +5,7 @@
 #include <QtCore/QMetaObject>
 
 #include <limits>
+#include <QHash>
 
 /**
  * @file
@@ -83,13 +84,15 @@ Q_ENUM_NS(PortType)
 
 /// @brief 节点间传输的数据类型
 enum class PortTransDataType {
-    Int = 0,
-    Bool = 1,
-    Float = 2,
-    String = 3,
-    Mat = 4,
-    File = 5
+    Int,
+    Bool,
+    Float,
+    String,
+    Mat,
+    File
 };
+
+Q_ENUM_NS(PortTransDataType)
 
 using PortCount = unsigned int;
 
@@ -131,6 +134,44 @@ inline bool operator==(ConnectionId const &a, ConnectionId const &b)
 inline bool operator!=(ConnectionId const &a, ConnectionId const &b)
 {
     return !(a == b);
+}
+
+inline bool operator==(PortId const &a, PortId const &b)
+{
+    return a.portIndex == b.portIndex && a.portType == b.portType;
+}
+
+inline bool operator!=(PortId const &a, PortId const &b)
+{
+    return !(a == b);
+}
+
+inline bool operator<(const PortId &lhs, const PortId &rhs)
+{
+    // 先比较 portType，再比较 portIndex
+    if (lhs.portType != rhs.portType) {
+        return lhs.portType < rhs.portType;
+    }
+    return lhs.portIndex < rhs.portIndex;
+}
+// 哈希函数
+inline uint qHash(const PortId &key, uint seed = 0) noexcept
+{
+    // 组合 portType 和 portIndex 的哈希值
+    return qHashMulti(seed, key.portType, key.portIndex);
+}
+
+inline bool operator>(const PortId &lhs, const PortId &rhs)
+{
+    return rhs < lhs;
+}
+inline bool operator<=(const PortId &lhs, const PortId &rhs)
+{
+    return !(rhs < lhs);
+}
+inline bool operator>=(const PortId &lhs, const PortId &rhs)
+{
+    return !(lhs < rhs);
 }
 
 inline void invertConnection(ConnectionId &id)

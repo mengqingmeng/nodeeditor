@@ -198,7 +198,7 @@ void DefaultConnectionPainter::paint(QPainter *painter, ConnectionGraphicsObject
     painter->setBrush(connectionStyle.normalColor());
     //double const pointRadius = pointDiameter / 2.0;
 
-    // ÉèÖÃ°ë¾¶Îª0£¬ÈÃ¼ıÍ·½ôÌù½Úµã
+    // è®¾ç½®åŠå¾„ä¸º0ï¼Œè®©ç®­å¤´ç´§è´´èŠ‚ç‚¹
     double const pointRadius = 0.0f;
     if (connectionStyle.outArrow()) {
         auto out = createArrowPoly(cubic, pointRadius, pointDiameter * 1.5, false);

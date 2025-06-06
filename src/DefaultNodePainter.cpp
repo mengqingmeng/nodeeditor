@@ -122,10 +122,11 @@ void DefaultNodePainter::drawConnectionPoints(QPainter *painter, NodeGraphicsObj
                     double dist = std::sqrt(QPointF::dotProduct(diff, diff));
 
                     if (possible) {
-                        double const thres = 40.0;
-                        r = (dist < thres) ? (2.0 - dist / thres) : 1.0;
+                        double const thres = 30.0;
+                        r = (dist < thres) ? (1.36 - dist / thres) : 1.0;
+                        
                     } else {
-                        double const thres = 80.0;
+                        double const thres = 10.0;
                         r = (dist < thres) ? (dist / thres) : 1.0;
                     }
                 }
@@ -248,7 +249,7 @@ void DefaultNodePainter::drawEntryLabels(QPainter *painter, NodeGraphicsObject &
                 s = model.portData<QString>(nodeId, portType, portIndex, PortRole::Caption);
             } else */
                 
-            if (model.portData<bool>(nodeId, portType, portIndex, PortRole::PortCaptionVisible)) { // 端口标题不可见时，不展示端口标题
+            if (model.portData<bool>(nodeId, portType, portIndex, PortRole::PortCaptionVisible)) { // 绔彛鏍囬涓嶅彲瑙佹椂锛屼笉灞曠ず绔彛鏍囬
                 auto portData = model.portData(nodeId, portType, portIndex, PortRole::DataType);
                 s = portData.value<NodeDataType>().name;
             }

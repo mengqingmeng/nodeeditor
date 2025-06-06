@@ -48,7 +48,9 @@ public:
     /// @param connectionId  连接id
     /// @return
     bool connectionPossible(ConnectionId const connectionId) const override {
-        return !connectionLoop(connectionId);
+        bool typeMatch = connectionTransTypeMatch(connectionId);
+        bool looped = connectionLoop(connectionId);
+        return typeMatch && !looped;
     }
 
 private:
