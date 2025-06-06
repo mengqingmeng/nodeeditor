@@ -37,7 +37,7 @@ void DefaultVerticalNodeGeometry::recomputeSize(NodeId const nodeId) const
         height += static_cast<unsigned int>(w->height());
     }
 
-    // ±êÌâËùÕ¼¾ØĞÎ
+    // æ ‡é¢˜æ‰€å çŸ©å½¢
     QRectF const capRect = captionRect(nodeId);
 
     height += capRect.height();
@@ -75,7 +75,7 @@ void DefaultVerticalNodeGeometry::recomputeSize(NodeId const nodeId) const
     width += _portSpasing;
     width += _portSpasing;
 
-    // *1.5½øĞĞ¼Ó¿í
+    // *1.5è¿›è¡ŒåŠ å®½
     QSize size(width * 1.5, height);
 
     _graphModel.setNodeData(nodeId, NodeRole::Size, size);
@@ -245,7 +245,7 @@ unsigned int DefaultVerticalNodeGeometry::maxPortsTextAdvance(NodeId const nodeI
 {
     unsigned int width = 0;
 
-    // ¶Ë¿ÚÊıÁ¿
+    // ç«¯å£æ•°é‡
     size_t const n = _graphModel
                          .nodeData(nodeId,
                                    (portType == PortType::Out) ? NodeRole::OutPortCount
@@ -267,7 +267,7 @@ unsigned int DefaultVerticalNodeGeometry::maxPortsTextAdvance(NodeId const nodeI
         }
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
-        // ¼ÆËãÃû³ÆË®Æ½Õ¼ÓÃ¿í¶È
+        // è®¡ç®—åç§°æ°´å¹³å ç”¨å®½åº¦
         width = std::max(unsigned(_fontMetrics.horizontalAdvance(name)), width);
 #else
         width = std::max(unsigned(_fontMetrics.width(name)), width);

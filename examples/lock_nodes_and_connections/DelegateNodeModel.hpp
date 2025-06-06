@@ -14,6 +14,7 @@ using QtNodes::NodeDataType;
 using QtNodes::NodeDelegateModel;
 using QtNodes::PortIndex;
 using QtNodes::PortType;
+using QtNodes::PortTransDataType;
 
 class CameraModelData : public NodeData
 {
@@ -46,6 +47,8 @@ public:
     {
         auto &style = nodeStyle();
         QColor color = style.ConnectionPointColor;
+        setPortTransTypes({PortType::In, 0}, {PortTransDataType::Int, PortTransDataType::Bool});
+        setPortTransTypes({PortType::Out, 0}, {PortTransDataType::String, PortTransDataType::Bool});
     }
 
     ~CameraModel() { 
@@ -87,7 +90,6 @@ public:
             _label = new QLabel();
             _label->setStyleSheet("QLabel {"
                                  "  background: transparent;"
-                                 "  image-rendering: smooth;"
                                  "}");
             _label->setAttribute(Qt::WA_TranslucentBackground);
 

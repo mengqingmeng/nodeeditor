@@ -6,6 +6,8 @@ namespace QtNodes {
 
 NodeDelegateModel::NodeDelegateModel()
     : _nodeStyle(StyleCollection::nodeStyle())
+    , _inCount(1)
+    , _outCount(1)
 {
     // Derived classes can initialize specific style here
 }
@@ -20,7 +22,8 @@ NodeDelegateModel::NodeDelegateModel(const QString &name,
     , _category(category)
     , _inCount(inCount)
     , _outCount(outCount)
-{}
+{
+}
 
 QJsonObject NodeDelegateModel::save() const
 {
@@ -140,6 +143,17 @@ void NodeDelegateModel::setSvgToLabel(QLabel *label,
 
     finalPixmap.setDevicePixelRatio(dpr);
     label->setPixmap(finalPixmap);
+}
+
+QSet<PortTransDataType> NodeDelegateModel::getPortTransTypes(const PortId &portId) {
+    return _nodePortTransTypes[portId];
+}
+
+void NodeDelegateModel::setPortTransTypes(const PortId &portId,const QSet<PortTransDataType> &transTypes)
+{
+    for (const PortTransDataType type : transTypes) {
+        _nodePortTransTypes[portId].insert(type);
+    }
 }
 
 } // namespace QtNodes

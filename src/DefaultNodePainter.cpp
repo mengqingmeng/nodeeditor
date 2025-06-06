@@ -248,7 +248,7 @@ void DefaultNodePainter::drawEntryLabels(QPainter *painter, NodeGraphicsObject &
                 s = model.portData<QString>(nodeId, portType, portIndex, PortRole::Caption);
             } else */
                 
-            if (model.portData<bool>(nodeId, portType, portIndex, PortRole::PortCaptionVisible)) { // 端口标题不可见时，不展示端口标题
+            if (model.portData<bool>(nodeId, portType, portIndex, PortRole::PortCaptionVisible)) { // 绔彛鏍囬涓嶅彲瑙佹椂锛屼笉灞曠ず绔彛鏍囬
                 auto portData = model.portData(nodeId, portType, portIndex, PortRole::DataType);
                 s = portData.value<NodeDataType>().name;
             }

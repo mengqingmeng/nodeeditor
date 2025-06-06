@@ -12,6 +12,8 @@
 #include <QLabel>
 #include <QSvgRenderer>
 #include <QPainter>
+#include <QMap>
+#include <QList>
 
 namespace QtNodes {
 
@@ -78,6 +80,23 @@ public:
 
     void setNodeStyle(NodeStyle const &style);
 
+    /// @brief 为QLabel设置svg图片
+    /// @param label 标签
+    /// @param svgPath svg图片路径
+    /// @param size 图片大小
+    /// @param sampleFactor 采样倍率
+    void setSvgToLabel(QLabel *label, const QString &svgPath, int size = 20, int sampleFactor = 2);
+
+    /// @brief 获取端口支持的数据传输类型
+    /// @param portId 端口ID
+    /// @return QList<PortTransDataType
+    QSet<PortTransDataType> getPortTransTypes(const PortId& portId);
+
+    /// @brief 设置端口支持的数据传输类型
+    /// @param portId 端口ID
+    /// @param transTypes 支持的数据类型
+    void setPortTransTypes(const PortId &portId, const QSet<PortTransDataType>& transTypes);
+
 public:
     virtual void setInData(std::shared_ptr<NodeData> nodeData, PortIndex const portIndex) = 0;
 
@@ -96,13 +115,6 @@ public:
     virtual QWidget *embeddedWidget() = 0;
 
     virtual bool resizable() const { return false; }
-
-    /// @brief 为QLabel设置svg图片
-    /// @param label 标签
-    /// @param svgPath svg图片路径
-    /// @param size 图片大小
-    /// @param sampleFactor 采样倍率
-    void setSvgToLabel(QLabel *label, const QString &svgPath,int size = 20,int sampleFactor = 2);
 
 public Q_SLOTS:
 
@@ -169,7 +181,7 @@ private:
     unsigned int _outCount;
 
     /// @brief 输入输出端口传输数据类型
-    //std::unordered_map<PortId, QList<PortTransDataType>> _nodePortTransTypes;
+    QMap<PortId, QSet<PortTransDataType>> _nodePortTransTypes;
 };
 
 } // namespace QtNodes
