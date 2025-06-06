@@ -11,12 +11,13 @@ NumberSourceDataModel::NumberSourceDataModel()
     , _number(std::make_shared<DecimalData>(0.0))
 {}
 
-NumberSourceDataModel::NumberSourceDataModel(const QString &name,
+NumberSourceDataModel::NumberSourceDataModel(const QString &uniqueName,
                                              const QString &caption,
                                              const QString &category,
+                                             const QString& parentUniqueName,
                                              unsigned int inCount,
                                              unsigned int outCount)
-    : NodeDelegateModel(name, caption, category, inCount, outCount)
+    : NodeDelegateModel(uniqueName, caption, category, parentUniqueName,inCount, outCount)
     ,_lineEdit{nullptr}
     , _number(std::make_shared<DecimalData>(0.0))
 {}

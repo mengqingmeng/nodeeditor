@@ -32,9 +32,10 @@ class NODE_EDITOR_PUBLIC NodeDelegateModel : public QObject, public Serializable
 public:
     NodeDelegateModel();
 
-    NodeDelegateModel(const QString &name,
+    NodeDelegateModel(const QString &uniqueName,
                       const QString &caption = "default caption",
                       const QString &category = "default category",
+                      const QString &parentUniqueName = "parent",
                       unsigned int inCount = 1,
                       unsigned int outCount = 1);
 
@@ -53,11 +54,15 @@ public:
     virtual QString portCaption(PortType, PortIndex) const { return QString(); }
 
     /// 获取模型唯一名称，Name makes this model unique
-    QString name() const;
+    QString uniqueName() const;
 
     /// @brief 获取目录名称
     /// @return 
     QString category() const;
+
+    /// @brief 获取父节点唯一名称
+    /// @return 
+    QString parentUniqueName() const;
 
 public:
     QJsonObject save() const override;
@@ -79,13 +84,6 @@ public:
     NodeStyle const &nodeStyle() const;
 
     void setNodeStyle(NodeStyle const &style);
-
-    /// @brief 为QLabel设置svg图片
-    /// @param label 标签
-    /// @param svgPath svg图片路径
-    /// @param size 图片大小
-    /// @param sampleFactor 采样倍率
-    void setSvgToLabel(QLabel *label, const QString &svgPath, int size = 16, int sampleFactor = 2);
 
     /// @brief 获取端口支持的数据传输类型
     /// @param portId 端口ID
@@ -169,7 +167,7 @@ private:
     QString _caption;
 
     /// @brief 唯一名称
-    QString _name;
+    QString _uniqueName;
 
     /// @brief 目录
     QString _category;
@@ -179,6 +177,8 @@ private:
 
     /// @brief 输出端口数量
     unsigned int _outCount;
+
+    QString _parentUniqueName;
 
     /// @brief 输入输出端口传输数据类型
     QMap<PortId, QSet<PortTransDataType>> _nodePortTransTypes;

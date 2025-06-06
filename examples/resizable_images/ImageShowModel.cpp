@@ -24,11 +24,12 @@ ImageShowModel::ImageShowModel()
     _label->installEventFilter(this);
 }
 
-ImageShowModel::ImageShowModel(const QString &name,
+ImageShowModel::ImageShowModel(const QString &uniqueName,
                                const QString &caption,
                                const QString &category,
+                               const QString &parentUniqueName,
                                unsigned int inCount,
-                               unsigned int outCount): NodeDelegateModel(name, caption, category,inCount,outCount){}
+                               unsigned int outCount): NodeDelegateModel(uniqueName, caption, category,parentUniqueName,inCount,outCount){}
 
 unsigned int ImageShowModel::nPorts(PortType portType) const
 {

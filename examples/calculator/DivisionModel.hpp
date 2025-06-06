@@ -14,12 +14,13 @@ class DivisionModel : public MathOperationDataModel
 {
 public:
     DivisionModel(){ _operationType = "/"; }
-    DivisionModel(const QString &name,
+    DivisionModel(const QString &uniqueName,
                 const QString &caption = "default caption",
                 const QString &category = "default category",
+                  const QString &parentUniqueName = "parent",
                 int inCount = 1,
                 int outCount = 1)
-        : MathOperationDataModel(name, caption, category,inCount,outCount)
+        : MathOperationDataModel(uniqueName, caption, category,parentUniqueName,inCount,outCount)
     {
         _operationType = "/";
     }

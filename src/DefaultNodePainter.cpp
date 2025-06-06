@@ -200,7 +200,7 @@ void DefaultNodePainter::drawNodeCaption(QPainter *painter, NodeGraphicsObject &
     if (!model.nodeData(nodeId, NodeRole::CaptionVisible).toBool())
         return;
 
-    QString const name = model.nodeData(nodeId, NodeRole::Caption).toString();
+    QString const uniqueName = model.nodeData(nodeId, NodeRole::Caption).toString();
 
     QFont f = painter->font();
     f.setBold(true);
@@ -212,7 +212,7 @@ void DefaultNodePainter::drawNodeCaption(QPainter *painter, NodeGraphicsObject &
 
     painter->setFont(f);
     painter->setPen(nodeStyle.FontColor);
-    painter->drawText(position, name);
+    painter->drawText(position, uniqueName);
 
     f.setBold(false);
     painter->setFont(f);
@@ -251,7 +251,7 @@ void DefaultNodePainter::drawEntryLabels(QPainter *painter, NodeGraphicsObject &
                 
             if (model.portData<bool>(nodeId, portType, portIndex, PortRole::PortCaptionVisible)) { // 端口标题不可见时，不展示端口标题
                 auto portData = model.portData(nodeId, portType, portIndex, PortRole::DataType);
-                s = portData.value<NodeDataType>().name;
+                s = portData.value<NodeDataType>().uniqueName;
             }
 
             if (!s.isEmpty())

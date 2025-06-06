@@ -57,8 +57,8 @@ std::vector<NodeId> DataFlowGraphicsScene::selectedNodes() const
     return result;
 }
 
-void DataFlowGraphicsScene::addUndoNode(QString const name, QPointF const &mouseScenePos) {
-    this->undoStack().push(new CreateCommand(this, name, mouseScenePos));
+void DataFlowGraphicsScene::addUndoNode(QString const uniqueName, QPointF const &mouseScenePos) {
+    this->undoStack().push(new CreateCommand(this, uniqueName, mouseScenePos));
 }
 
 QMenu *DataFlowGraphicsScene::createSceneMenu(QPointF const scenePos)

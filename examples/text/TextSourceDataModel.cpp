@@ -8,12 +8,13 @@ TextSourceDataModel::TextSourceDataModel()
     //
 }
 
-TextSourceDataModel::TextSourceDataModel(const QString &name,
+TextSourceDataModel::TextSourceDataModel(const QString &uniqueName,
                                          const QString &caption,
                                          const QString &category,
+                                         const QString &parentUniqueName,
                                          unsigned int inCount,
                                          unsigned int outCount):
-    NodeDelegateModel(name, caption, category,inCount,outCount){}
+    NodeDelegateModel(uniqueName, caption, category,parentUniqueName,inCount,outCount){}
 
 unsigned int TextSourceDataModel::nPorts(PortType portType) const
 {

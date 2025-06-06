@@ -6,12 +6,13 @@ TextDisplayDataModel::TextDisplayDataModel()
     _label->setMargin(3);
 }
 
-TextDisplayDataModel::TextDisplayDataModel(const QString &name,
+TextDisplayDataModel::TextDisplayDataModel(const QString &uniqueName,
                                              const QString &caption,
                                              const QString &category,
+                                           const QString &parentUniqueName,
                                              unsigned int inCount,
                                              unsigned int outCount):
-    NodeDelegateModel(name, caption, category,inCount,outCount){}
+    NodeDelegateModel(uniqueName, caption, category,parentUniqueName,inCount,outCount){}
 
 unsigned int TextDisplayDataModel::nPorts(PortType portType) const
 {

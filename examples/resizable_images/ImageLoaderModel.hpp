@@ -25,9 +25,10 @@ class ImageLoaderModel : public NodeDelegateModel
 public:
     ImageLoaderModel();
 
-    ImageLoaderModel(const QString &name,
+    ImageLoaderModel(const QString &uniqueName,
                    const QString &caption = "default caption",
                    const QString &category = "default category",
+                     const QString &parentUniqueName = "parent",
                    unsigned int inCount = 1,
                    unsigned int outCount = 1);
 

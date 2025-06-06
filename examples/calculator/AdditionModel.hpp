@@ -16,12 +16,13 @@ public:
     AdditionModel()
     { _operationType = "+";
     }
-    AdditionModel(const QString &name,
+    AdditionModel(const QString &uniqueName,
                                 const QString &caption = "default caption",
                                 const QString &category = "default category",
+                                const QString &parentUniqueName = "parent",
                                 int inCount = 1,
                                 int outCount = 1)
-        : MathOperationDataModel(name, caption, category,inCount,outCount){
+        : MathOperationDataModel(uniqueName, caption, category,parentUniqueName,inCount,outCount){
         _operationType = "Add";
     }
     ~AdditionModel() = default;

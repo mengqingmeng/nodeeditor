@@ -150,9 +150,9 @@ QRectF DefaultVerticalNodeGeometry::captionRect(NodeId const nodeId) const
     if (!_graphModel.nodeData<bool>(nodeId, NodeRole::CaptionVisible))
         return QRect();
 
-    QString name = _graphModel.nodeData<QString>(nodeId, NodeRole::Caption);
+    QString caption = _graphModel.nodeData<QString>(nodeId, NodeRole::Caption);
 
-    return _boldFontMetrics.boundingRect(name);
+    return _boldFontMetrics.boundingRect(caption);
 }
 
 QPointF DefaultVerticalNodeGeometry::captionPosition(NodeId const nodeId) const
@@ -162,7 +162,7 @@ QPointF DefaultVerticalNodeGeometry::captionPosition(NodeId const nodeId) const
 
     // 计算垂直方向的间隔(上方)
     unsigned int step = portCaptionsHeight(nodeId, PortType::In);
-    step += _portSpasing;
+    step += _portSpasing/2.0;
 
     // 标题矩形
     auto rect = captionRect(nodeId);
@@ -172,7 +172,8 @@ QPointF DefaultVerticalNodeGeometry::captionPosition(NodeId const nodeId) const
         x += (w->width() / 2.0);
     }
 
-    float y = _portSpasing + rect.height();
+    //float y = _portSpasing + rect.height();
+    float y = size.height() / 2.0 + step;
     return QPointF(x, y);
 }
 
@@ -193,8 +194,7 @@ QPointF DefaultVerticalNodeGeometry::widgetPosition(NodeId const nodeId) const
         if (w->sizePolicy().verticalPolicy() & QSizePolicy::ExpandFlag) {
             return QPointF(x, captionHeight);
         } else {
-            return QPointF(x, capPos.y() - capRect.height() + w->height() / 2 - capRect.height() / 2);
-                           //(captionHeight + size.height() - w->height()) / 2.0);
+            return QPointF(x, size.height()/2.0 - w->height() /2.0);
         }
     }
     return QPointF();
@@ -225,7 +225,7 @@ QRectF DefaultVerticalNodeGeometry::portTextRect(NodeId const nodeId,
     if (_graphModel.portData<bool>(nodeId, portType, portIndex, PortRole::PortCaptionVisible)) {
         auto portData = _graphModel.portData(nodeId, portType, portIndex, PortRole::DataType);
 
-        s = portData.value<NodeDataType>().name;
+        s = portData.value<NodeDataType>().uniqueName;
     }
 
     return _fontMetrics.boundingRect(s);
@@ -256,22 +256,22 @@ unsigned int DefaultVerticalNodeGeometry::maxPortsTextAdvance(NodeId const nodeI
                          .toUInt();
 
     for (PortIndex portIndex = 0ul; portIndex < n; ++portIndex) {
-        QString name;
+        QString uniqueName;
 
         if (_graphModel.portData<bool>(nodeId, portType, portIndex, PortRole::CaptionVisible)) {
-            name = _graphModel.portData<QString>(nodeId, portType, portIndex, PortRole::Caption);
+            uniqueName = _graphModel.portData<QString>(nodeId, portType, portIndex, PortRole::Caption);
         } else {
             NodeDataType portData = _graphModel.portData<NodeDataType>(nodeId,
                                                                        portType,
                                                                        portIndex,
                                                                        PortRole::DataType);
 
-            name = portData.name;
+            uniqueName = portData.uniqueName;
         }
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
         // 计算名称水平占用宽度
-        width = std::max(unsigned(_fontMetrics.horizontalAdvance(name)), width);
+        width = std::max(unsigned(_fontMetrics.horizontalAdvance(uniqueName)), width);
 #else
         width = std::max(unsigned(_fontMetrics.width(name)), width);
 #endif

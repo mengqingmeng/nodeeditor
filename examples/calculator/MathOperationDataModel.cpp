@@ -5,13 +5,14 @@
 MathOperationDataModel::MathOperationDataModel():_label(nullptr) {}
 
 
-MathOperationDataModel::MathOperationDataModel(const QString &name,
+MathOperationDataModel::MathOperationDataModel(const QString &uniqueName,
                                                const QString &caption,
                                                const QString &category,
+                                               const QString &parentUniqueName,
                                                int inCount,
                                                int outCount)
     : NodeDelegateModel(
-    name, caption, category, inCount, outCount),_label(nullptr)
+    uniqueName, caption, category,parentUniqueName, inCount, outCount),_label(nullptr)
 {}
 
 unsigned int MathOperationDataModel::nPorts(PortType portType) const

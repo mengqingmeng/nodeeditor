@@ -16,7 +16,7 @@ namespace QtNodes {
 struct NODE_EDITOR_PUBLIC NodeDataType
 {
     QString id;
-    QString name;
+    QString uniqueName;
 };
 
 /**

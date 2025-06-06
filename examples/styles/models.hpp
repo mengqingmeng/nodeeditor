@@ -30,11 +30,12 @@ class MyDataModel : public NodeDelegateModel
     Q_OBJECT
 public:
     MyDataModel(){}
-    MyDataModel(const QString &name,
+    MyDataModel(const QString &uniqueName,
                           const QString &caption = "default caption",
                           const QString &category = "default category",
+                            const QString &parentUniqueName = "parent",
                           unsigned int inCount = 1,
-                          unsigned int outCount = 1): NodeDelegateModel(name, caption, category,inCount,outCount){}
+                          unsigned int outCount = 1): NodeDelegateModel(uniqueName, caption, category,parentUniqueName,inCount,outCount){}
 
     ~MyDataModel() = default;
 
@@ -45,7 +46,7 @@ public:
     {
         QJsonObject modelJson;
 
-        modelJson["name"] = name();
+        modelJson["name"] = uniqueName();
 
         return modelJson;
     }

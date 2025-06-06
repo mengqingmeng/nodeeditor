@@ -266,7 +266,7 @@ QVariant DataFlowGraphModel::nodeData(NodeId nodeId, NodeRole role) const
     switch (role) {
     case NodeRole::Type:
         // 模型名称，需唯一
-        result = model->name();
+        result = model->uniqueName();
         break;
 
     case NodeRole::Position:

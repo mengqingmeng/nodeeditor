@@ -124,12 +124,12 @@ static QPointF computeAverageNodePosition(QJsonObject const &sceneJson)
 //-------------------------------------
 
 CreateCommand::CreateCommand(BasicGraphicsScene *scene,
-                             QString const name,
+                             QString const uniqueName,
                              QPointF const &mouseScenePos)
     : _scene(scene)
     , _sceneJson(QJsonObject())
 {
-    _nodeId = _scene->graphModel().addNode(name);
+    _nodeId = _scene->graphModel().addNode(uniqueName);
     if (_nodeId != InvalidNodeId) {
         _scene->graphModel().setNodeData(_nodeId, NodeRole::Position, mouseScenePos);
     } else {

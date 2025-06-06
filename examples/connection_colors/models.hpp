@@ -37,12 +37,13 @@ class NaiveDataModel : public NodeDelegateModel
 
 public:
     NaiveDataModel() {}
-    NaiveDataModel(const QString &name,
+    NaiveDataModel(const QString &uniqueName,
                    const QString &caption = "default caption",
                    const QString &category = "default category",
+                   const QString &parentUniqueName = "parent",
                    unsigned int inCount = 1,
                    unsigned int outCount = 1)
-        : NodeDelegateModel(name, caption, category, inCount, outCount)
+        : NodeDelegateModel(uniqueName, caption, category,parentUniqueName, inCount, outCount)
     {}
     virtual ~NaiveDataModel() {}
 

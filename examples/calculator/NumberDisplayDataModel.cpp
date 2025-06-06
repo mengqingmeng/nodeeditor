@@ -4,12 +4,13 @@
 
 NumberDisplayDataModel::NumberDisplayDataModel() :_label{nullptr} {}
 
-NumberDisplayDataModel::NumberDisplayDataModel(const QString &name,
+NumberDisplayDataModel::NumberDisplayDataModel(const QString &uniqueName,
                                                const QString &caption,
                                                const QString &category,
+                                               const QString &parentUniqueName,
                                                unsigned int inCount,
                                                unsigned int outCount):
-    NodeDelegateModel(name, caption, category, inCount, outCount),_label{nullptr}
+    NodeDelegateModel(uniqueName, caption, category,parentUniqueName, inCount, outCount),_label{nullptr}
 {}
 
 unsigned int NumberDisplayDataModel::nPorts(PortType portType) const

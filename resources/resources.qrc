@@ -3,6 +3,6 @@
         <file>DefaultStyle.json</file>
     </qresource>
     <qresource prefix="/images">
-        <file>images/default-operator.svg</file>
+        <file>images/default.svg</file>
     </qresource>
 </RCC>

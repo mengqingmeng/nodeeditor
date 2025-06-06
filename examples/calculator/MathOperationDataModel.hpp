@@ -25,9 +25,10 @@ class MathOperationDataModel : public NodeDelegateModel
 public:
     MathOperationDataModel();
 
-    MathOperationDataModel(const QString &name,
+    MathOperationDataModel(const QString &uniqueName,
                            const QString &caption = "default caption",
                            const QString &category = "default category",
+                           const QString &parentUniqueName = "parent",
                            int inCount = 1,
                            int outCount = 1);
 

@@ -47,11 +47,11 @@ public:
     template<typename ModelType>
     void registerModel(RegistryItemCreator creator, QString const &category = "Nodes")
     {
-        QString const name = computeName<ModelType>(HasStaticMethodName<ModelType>{}, creator);
-        if (!_registeredItemCreators.count(name)) {
-            _registeredItemCreators[name] = std::move(creator);
+        QString const uniqueName = computeName<ModelType>(HasStaticMethodName<ModelType>{}, creator);
+        if (!_registeredItemCreators.count(uniqueName)) {
+            _registeredItemCreators[uniqueName] = std::move(creator);
             _categories.insert(category);
-            _registeredModelsCategory[name] = category;
+            _registeredModelsCategory[uniqueName] = category;
         }
     }
 
@@ -61,10 +61,12 @@ public:
     /// @param caption 标题，选填
     /// @param category 目录，选填
     template<typename ModelType>
-    void registerModel(QString const name,
-                       QString const caption = "caption", QString const category = "Nodes")
+    void registerModel(QString const uniqueName,
+                       QString const caption = "caption",
+                       QString const category = "Nodes",
+                       QString const parentUniqueName = "parent")
     {
-        RegistryItemCreator creator = [=]() { return std::make_unique<ModelType>(name,caption,category); };
+        RegistryItemCreator creator = [=]() { return std::make_unique<ModelType>(uniqueName,caption,category,parentUniqueName); };
         registerModel<ModelType>(std::move(creator), category);
     }
 
@@ -153,7 +155,7 @@ private:
     template<typename ModelType>
     static QString computeName(std::false_type, RegistryItemCreator const &creator)
     {
-        return creator()->name();
+        return creator()->uniqueName();
     }
 
     template<typename T>

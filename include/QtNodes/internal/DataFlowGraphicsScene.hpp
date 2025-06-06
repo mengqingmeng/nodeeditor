@@ -28,7 +28,7 @@ public:
      * @param name node name
      * @param mouseScenePos node position
      */
-    void addUndoNode(QString const name,QPointF const &mouseScenePos);
+    void addUndoNode(QString const uniqueName,QPointF const &mouseScenePos);
 
 public:
     QMenu *createSceneMenu(QPointF const scenePos) override;

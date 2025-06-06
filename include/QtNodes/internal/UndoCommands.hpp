@@ -15,7 +15,7 @@ class BasicGraphicsScene;
 class CreateCommand : public QUndoCommand
 {
 public:
-    CreateCommand(BasicGraphicsScene *scene, QString const name, QPointF const &mouseScenePos);
+    CreateCommand(BasicGraphicsScene *scene, QString const uniqueName, QPointF const &mouseScenePos);
 
     void undo() override;
     void redo() override;

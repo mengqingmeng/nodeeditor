@@ -52,7 +52,7 @@ NodeGraphicsObject::NodeGraphicsObject(BasicGraphicsScene &scene, NodeId nodeId)
 
     setZValue(0);
 
-    // ×Ô¶¨Òå×é¼þ
+    // è‡ªå®šä¹‰ç»„ä»¶
     embedQWidget();
 
     nodeScene()->nodeGeometry().recomputeSize(_nodeId);

@@ -53,7 +53,7 @@ PortIndex AbstractNodeGeometry::checkPortHit(NodeId const nodeId,
         return result;
 
     //double const tolerance = 2.0 * nodeStyle.ConnectionPointDiameter;
-    // ÍÏ¶¯¶ËµãÁ¬½ÓÏßÊ±µÄÓÐÐ§·¶Î§
+    // æ‹–åŠ¨ç«¯ç‚¹è¿žæŽ¥çº¿æ—¶çš„æœ‰æ•ˆèŒƒå›´
     double const tolerance = nodeStyle.ConnectionPointDiameter;
 
     size_t const n = _graphModel.nodeData<unsigned int>(nodeId,

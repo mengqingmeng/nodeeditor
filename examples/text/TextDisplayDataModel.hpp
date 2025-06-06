@@ -25,9 +25,10 @@ class TextDisplayDataModel : public NodeDelegateModel
 public:
     TextDisplayDataModel();
 
-    TextDisplayDataModel(const QString &name,
+    TextDisplayDataModel(const QString &uniqueName,
                         const QString &caption = "default caption",
                         const QString &category = "default category",
+                         const QString &parentUniqueName = "parent",
                         unsigned int inCount = 1,
                          unsigned int outCount = 1);
 

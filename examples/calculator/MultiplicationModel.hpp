@@ -16,11 +16,12 @@ class MultiplicationModel : public MathOperationDataModel
 public:
     MultiplicationModel(){ _operationType = "x";
     }
-    MultiplicationModel(const QString &name,
+    MultiplicationModel(const QString &uniqueName,
                            const QString &caption = "default caption",
                            const QString &category = "default category",
+                           const QString &parentUniqueName = "parent",
                            unsigned int inCount = 1,
-                        unsigned int outCount = 1): MathOperationDataModel(name, caption, category,inCount,outCount){
+                        unsigned int outCount = 1): MathOperationDataModel(uniqueName, caption, category,parentUniqueName,inCount,outCount){
         _operationType = "x";
     }
     virtual ~MultiplicationModel() {}

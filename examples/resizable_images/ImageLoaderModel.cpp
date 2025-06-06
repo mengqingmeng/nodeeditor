@@ -22,11 +22,12 @@ ImageLoaderModel::ImageLoaderModel()
     _label->installEventFilter(this);
 }
 
-ImageLoaderModel::ImageLoaderModel(const QString &name,
+ImageLoaderModel::ImageLoaderModel(const QString &uniqueName,
                                const QString &caption,
                                const QString &category,
+                                   const QString &parentUniqueName,
                                unsigned int inCount,
-                               unsigned int outCount): NodeDelegateModel(name, caption, category,inCount,outCount){}
+                               unsigned int outCount): NodeDelegateModel(uniqueName, caption, category,parentUniqueName,inCount,outCount){}
 
 unsigned int ImageLoaderModel::nPorts(PortType portType) const
 {

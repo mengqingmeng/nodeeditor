@@ -8,6 +8,7 @@
 #include <memory>
 #include <QLabel>
 #include <QPixmap>
+#include <QSvgWidget>
 
 using QtNodes::NodeData;
 using QtNodes::NodeDataType;
@@ -31,19 +32,21 @@ class CameraModel : public NodeDelegateModel
 public:
 
     CameraModel()
-        : _label(nullptr)
+        : _svgWidget(nullptr)
     { 
         auto& style = nodeStyle();
         QColor color = style.ConnectionPointColor;
     }
 
-    CameraModel(const QString &name,
+    CameraModel(const QString &uniqueName,
                     const QString &caption = "default caption",
                     const QString &category = "default category",
+                    const QString &parentUniqueName = "parent",
                     int inCount = 1,
                     int outCount = 1)
-        : NodeDelegateModel(name, caption, category, inCount, outCount)
-        , _label(nullptr)
+        : NodeDelegateModel(uniqueName, caption, category, parentUniqueName, inCount, outCount)
+        , _svgWidget(nullptr)
+
     {
         auto &style = nodeStyle();
         QColor color = style.ConnectionPointColor;
@@ -52,22 +55,22 @@ public:
     }
 
     ~CameraModel() { 
-        if (_label) {
-            delete _label;
+        if (_svgWidget) {
+            delete _svgWidget;
         }
     }
 
 private:
-    QLabel *_label;
+    QSvgWidget *_svgWidget;
 
 public:
 
     NodeDataType dataType(PortType const portType, PortIndex const portIndex) const override
     {
         if (portType == PortType::In) {
-            return NodeDataType{name(), "Input"};
+            return NodeDataType{uniqueName(), "Input"};
         } else if (portType == PortType::Out) {
-            return NodeDataType{name(), "Output"};
+            return NodeDataType{uniqueName(), "Output"};
         } else {
             return NodeDataType{"Default", "Default"};
         }
@@ -86,19 +89,14 @@ public:
 
     QWidget *embeddedWidget() override
     {
-        if (!_label) {
-            _label = new QLabel();
-            _label->setStyleSheet("QLabel {"
+        if (!_svgWidget) {
+            _svgWidget = new QSvgWidget(":/images/images/default.svg");
+            _svgWidget->setStyleSheet("QSvgWidget {"
                                  "  background: transparent;"
                                  "}");
-            _label->setAttribute(Qt::WA_TranslucentBackground);
-
-            _label->setMargin(1);
-
-
-            setSvgToLabel(_label, ":/images/images/default-operator.svg");
+            _svgWidget->setFixedSize(18, 18 ); // 设置显示尺寸
         }
 
-        return _label;
+        return _svgWidget;
     }
 };
