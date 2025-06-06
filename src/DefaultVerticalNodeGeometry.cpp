@@ -160,10 +160,6 @@ QPointF DefaultVerticalNodeGeometry::captionPosition(NodeId const nodeId) const
     // 节点的尺寸
     QSize size = _graphModel.nodeData<QSize>(nodeId, NodeRole::Size);
 
-    // 计算垂直方向的间隔(上方)
-    unsigned int step = portCaptionsHeight(nodeId, PortType::In);
-    step += _portSpasing/2.0;
-
     // 标题矩形
     auto rect = captionRect(nodeId);
 
@@ -172,9 +168,7 @@ QPointF DefaultVerticalNodeGeometry::captionPosition(NodeId const nodeId) const
         x += (w->width() / 2.0);
     }
 
-    //float y = _portSpasing + rect.height();
-    float y = size.height() / 2.0 + step;
-    return QPointF(x, y);
+    return QPointF(x, (size.height())/2.0 + rect.height()/4);
 }
 
 QPointF DefaultVerticalNodeGeometry::widgetPosition(NodeId const nodeId) const
@@ -194,7 +188,7 @@ QPointF DefaultVerticalNodeGeometry::widgetPosition(NodeId const nodeId) const
         if (w->sizePolicy().verticalPolicy() & QSizePolicy::ExpandFlag) {
             return QPointF(x, captionHeight);
         } else {
-            return QPointF(x, size.height()/2.0 - w->height() /2.0);
+            return QPointF(x, (size.height() - w->height()) / 2.0);
         }
     }
     return QPointF();
