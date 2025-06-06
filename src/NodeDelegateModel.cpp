@@ -21,8 +21,7 @@ NodeDelegateModel::NodeDelegateModel(const QString &name,
     , _name(name)
     , _category(category)
     , _inCount(inCount)
-    , _outCount(outCount)
-{
+    , _outCount(outCount){
 }
 
 QJsonObject NodeDelegateModel::save() const

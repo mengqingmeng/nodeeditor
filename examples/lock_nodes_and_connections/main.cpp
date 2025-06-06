@@ -36,7 +36,8 @@ int main(int argc, char *argv[])
             "ConnectionStyle": {
                 "InArrow" : true,
                 "OutArrow" : false,
-                "ConstructionColor":"darkcyan"
+                "ConstructionColor":"darkcyan",
+                "PointDiameter": 8.0
             }
             }
   )");

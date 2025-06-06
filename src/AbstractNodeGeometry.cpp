@@ -52,7 +52,9 @@ PortIndex AbstractNodeGeometry::checkPortHit(NodeId const nodeId,
     if (portType == PortType::None)
         return result;
 
-    double const tolerance = 2.0 * nodeStyle.ConnectionPointDiameter;
+    //double const tolerance = 2.0 * nodeStyle.ConnectionPointDiameter;
+    // 拖动端点连接线时的有效范围
+    double const tolerance = nodeStyle.ConnectionPointDiameter;
 
     size_t const n = _graphModel.nodeData<unsigned int>(nodeId,
                                                         (portType == PortType::Out)
