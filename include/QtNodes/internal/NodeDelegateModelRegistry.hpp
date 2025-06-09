@@ -25,7 +25,7 @@ public:
     using RegistryItemCreator = std::function<RegistryItemPtr()>;
     using RegisteredModelCreatorsMap = std::unordered_map<QString, RegistryItemCreator>;
     using RegisteredModelsCategoryMap = std::unordered_map<QString, QString>;
-    using CategoriesSet = std::set<QString>;
+    using CategoriesList = std::vector<QString>;
 
     //using RegisteredTypeConvertersMap = std::map<TypeConverterId, TypeConverter>;
 
@@ -47,10 +47,13 @@ public:
     template<typename ModelType>
     void registerModel(RegistryItemCreator creator, QString const &category = "Nodes")
     {
-        QString const uniqueName = computeName<ModelType>(HasStaticMethodName<ModelType>{}, creator);
+        QString const uniqueName = computeName<ModelType>(HasStaticMethodName<ModelType>{}, creator);        
+        if (std::find(_categories.begin(), _categories.end(), category)
+            == _categories.end()) {
+            _categories.push_back(category);
+        }                         
         if (!_registeredItemCreators.count(uniqueName)) {
             _registeredItemCreators[uniqueName] = std::move(creator);
-            _categories.insert(category);
             _registeredModelsCategory[uniqueName] = category;
         }
     }
@@ -112,7 +115,7 @@ public:
 
     RegisteredModelsCategoryMap const &registeredModelsCategoryAssociation() const;
 
-    CategoriesSet const &categories() const;
+    CategoriesList const &categories() const;
 
 #if 0
   TypeConverter
@@ -123,7 +126,7 @@ public:
 private:
     RegisteredModelsCategoryMap _registeredModelsCategory;
 
-    CategoriesSet _categories;
+    CategoriesList _categories;
 
     RegisteredModelCreatorsMap _registeredItemCreators;
 

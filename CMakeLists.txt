@@ -145,8 +145,7 @@ set(HPP_HEADER_FILES
 add_library(QtNodes
   ${CPP_SOURCE_FILES}
   ${HPP_HEADER_FILES}
-  ${RESOURCES}
-)
+  ${RESOURCES})
 
 add_library(QtNodes::QtNodes ALIAS QtNodes)
 

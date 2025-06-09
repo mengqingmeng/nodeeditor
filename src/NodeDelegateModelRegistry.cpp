@@ -30,7 +30,7 @@ NodeDelegateModelRegistry::registeredModelsCategoryAssociation() const
     return _registeredModelsCategory;
 }
 
-NodeDelegateModelRegistry::CategoriesSet const &NodeDelegateModelRegistry::categories() const
+NodeDelegateModelRegistry::CategoriesList const &NodeDelegateModelRegistry::categories() const
 {
     return _categories;
 }

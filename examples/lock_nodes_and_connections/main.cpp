@@ -17,11 +17,70 @@ using QtNodes::GraphicsView;
 using QtNodes::NodeDelegateModelRegistry;
 using QtNodes::NodeRole;
 
+struct MenuItem
+{
+    /// @brief 标题
+    QString caption;
+    /// @brief 唯一名称
+    QString uniqueName;
+    /// @brief 子菜单
+    QList<MenuItem> subItems;
+};
+
 static std::shared_ptr<NodeDelegateModelRegistry> registerDataModels()
 {
     auto ret = std::make_shared<NodeDelegateModelRegistry>();
 
-    ret->registerModel<CameraModel>("Camera", "相机测试", "图像采集");
+    QList<MenuItem> operators = {
+        {("图像采集"), "capture", {{("相机"), "camera"}, {("本地"), "localImage"}}},
+            {("定位"),
+             "locate",
+             {{("斑点检测"), "dot"},
+              {("找圆"), "findCircle"},
+              {("模板匹配"), "templateMatch"},
+              {("模板比对"), "templateCompare"},
+              {("轮廓比对"), "contourCompare"},
+              {("找顶点"), "findVertex"},
+              {("找多边"), "findSides"}}},
+         {("图像处理"),
+             "imageProcessing",
+             {
+                 {("滤波"), "filter"},
+                 {("二值化"), "threshold"},
+                 {("裁剪"), "cut"},
+                 {("灰度转换"), "gray"},
+                 {("颜色提取"), "colorExtract"},
+                 {("仿射变换"), "affineTransform"},
+                 {("形态学"), "morphology"},
+                 {("边缘梯度"), "edgeGradient"},
+                 {("亮度"), "brightness"},
+                 {("对比度"), "contrastRatio"},
+                 {("像素计数"), "pixelCount"},
+                 {("图像运算"), "imageOperate"},
+                 {("圆展开"), "unfoldCircle"},
+                 {("图像拼接"), "imageStitch"},
+             }},
+            {("标定"), "calibration"},
+            {("测量"), "measure"},
+            {("识别"), "identify"},
+            {("深度学习"), "deepLearning"},
+            {("逻辑"), "judge"},
+            {("生成工具"), "generate"},
+            {("通讯"), "communication"},
+            {("辅助工具"), "assistant"},
+            {("其它"), "other"}};
+
+
+    for (const auto &parentItem : operators) {
+        for (const auto &subItem : parentItem.subItems) {
+                ret->registerModel<CameraModel>(subItem.uniqueName,
+                                            subItem.caption,
+                                            parentItem.caption,
+                                            parentItem.uniqueName);
+        }
+    }
+
+
 
     return ret;
 }

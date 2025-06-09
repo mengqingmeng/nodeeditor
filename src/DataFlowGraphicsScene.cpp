@@ -94,7 +94,8 @@ QMenu *DataFlowGraphicsScene::createSceneMenu(QPointF const scenePos)
         item->setFlags(item->flags() & ~Qt::ItemIsSelectable);
     }
 
-    for (auto const &assoc : registry->registeredModelsCategoryAssociation()) {
+    auto& categories = registry->registeredModelsCategoryAssociation();
+    for (auto const &assoc : categories) {
         QList<QTreeWidgetItem *> parent = treeView->findItems(assoc.second, Qt::MatchExactly);
 
         if (parent.count() <= 0)
