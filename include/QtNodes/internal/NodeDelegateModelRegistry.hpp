@@ -14,6 +14,7 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
+#include "OrderedMap.hpp"
 
 namespace QtNodes {
 
@@ -24,7 +25,7 @@ public:
     using RegistryItemPtr = std::unique_ptr<NodeDelegateModel>;
     using RegistryItemCreator = std::function<RegistryItemPtr()>;
     using RegisteredModelCreatorsMap = std::unordered_map<QString, RegistryItemCreator>;
-    using RegisteredModelsCategoryMap = std::unordered_map<QString, QString>;
+    using RegisteredModelsCategoryMap = OrderedMap<QString,QString>;
     using CategoriesList = std::vector<QString>;
 
     //using RegisteredTypeConvertersMap = std::map<TypeConverterId, TypeConverter>;
@@ -54,7 +55,7 @@ public:
         }                         
         if (!_registeredItemCreators.count(uniqueName)) {
             _registeredItemCreators[uniqueName] = std::move(creator);
-            _registeredModelsCategory[uniqueName] = category;
+            _registeredModelsCategory.insert(uniqueName, category);
         }
     }
 

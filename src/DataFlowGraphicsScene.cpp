@@ -95,14 +95,20 @@ QMenu *DataFlowGraphicsScene::createSceneMenu(QPointF const scenePos)
     }
 
     auto& categories = registry->registeredModelsCategoryAssociation();
-    for (auto const &assoc : categories) {
-        QList<QTreeWidgetItem *> parent = treeView->findItems(assoc.second, Qt::MatchExactly);
+    for (auto const &uniqueName : categories.orderedKey()) { // key:唯一名称,value:目录名称
+        
+        auto category = categories.value(uniqueName);
+        if (!category)
+            continue;
+
+        // 父目录
+        QList<QTreeWidgetItem *> parent = treeView->findItems(category.value(), Qt::MatchExactly);
 
         if (parent.count() <= 0)
             continue;
 
         auto item = new QTreeWidgetItem(parent.first());
-        item->setText(0, assoc.first);
+        item->setText(0, uniqueName);
     }
 
     treeView->expandAll();
