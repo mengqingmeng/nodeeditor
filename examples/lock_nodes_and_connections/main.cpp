@@ -2,6 +2,7 @@
 #include <QtNodes/GraphicsView>
 #include <QtNodes/NodeDelegateModelRegistry>
 #include <QtNodes/ConnectionStyle>
+#include <QtNodes/NodeStyle>
 #include <QAction>
 #include <QScreen>
 #include <QtWidgets/QApplication>
@@ -16,6 +17,7 @@ using QtNodes::DataFlowGraphicsScene;
 using QtNodes::GraphicsView;
 using QtNodes::NodeDelegateModelRegistry;
 using QtNodes::NodeRole;
+using QtNodes::NodeStyle;
 
 struct MenuItem
 {
@@ -89,7 +91,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-     ConnectionStyle::setConnectionStyle(
+    /* ConnectionStyle::setConnectionStyle(
         R"(
             {
             "ConnectionStyle": {
@@ -99,6 +101,14 @@ int main(int argc, char *argv[])
                 "PointDiameter": 8.0
             }
             }
+  )");*/
+ NodeStyle::setNodeStyle(
+         R"(
+  {
+    "NodeStyle": {
+      "NodeMinWidth": 120
+    }
+  }
   )");
 
     DataFlowModel graphModel(registerDataModels());

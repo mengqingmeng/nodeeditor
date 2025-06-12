@@ -175,6 +175,53 @@ QColor ConnectionStyle::normalColor(QString typeId) const
     return QColor::fromHsl(hue, sat, 160);
 }
 
+void ConnectionStyle::constructionColor(const QColor& color) {
+    ConstructionColor = color;
+}
+
+void ConnectionStyle::selectedColor(const QColor& color) {
+    SelectedColor = color;
+}
+
+void ConnectionStyle::selectedHaloColor(const QColor& color) {
+    SelectedHaloColor = color;
+}
+
+void ConnectionStyle::hoveredColor(const QColor &color)
+{
+    HoveredColor = color;
+}
+
+void ConnectionStyle::lineWidth(float width)
+{
+    LineWidth = width;
+}
+
+void ConnectionStyle::constructionLineWidth(float width)
+{
+    ConstructionLineWidth = width;
+}
+
+void ConnectionStyle::pointDiameter(float diameter)
+{
+    PointDiameter = diameter;
+}
+
+void ConnectionStyle::useDataDefinedColors(bool use)
+{
+    UseDataDefinedColors = use;
+}
+
+void ConnectionStyle::inArraw(bool show)
+{
+    InArrow = show;
+}
+
+void ConnectionStyle::outArrow(bool show)
+{
+    OutArrow = show;
+}
+
 QColor ConnectionStyle::selectedColor() const
 {
     return SelectedColor;

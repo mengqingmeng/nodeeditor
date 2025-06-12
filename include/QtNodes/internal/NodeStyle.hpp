@@ -49,5 +49,8 @@ public:
     float ConnectionPointDiameter;
 
     float Opacity;
+
+    /// @brief 节点最小宽度（<0时，不限制最低宽度），未开发完成，配置不生效
+    int NodeMinWidth;
 };
 } // namespace QtNodes

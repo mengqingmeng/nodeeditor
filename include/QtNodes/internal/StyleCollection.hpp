@@ -24,6 +24,12 @@ public:
 
     static void setGraphicsViewStyle(GraphicsViewStyle);
 
+    static void mergeNodeStyle(const NodeStyle &srcStyle);
+
+    static void mergeConnectionStyle(const ConnectionStyle &srcStyle);
+
+    static void mergeGraphicsViewStyle(const GraphicsViewStyle &srcStyle);
+
 private:
     StyleCollection() = default;
 

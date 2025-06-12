@@ -58,7 +58,8 @@ static void setStyle()
       "PenWidth": 2.0,
       "HoveredPenWidth": 2.5,
       "ConnectionPointDiameter": 10.0,
-      "Opacity": 1.0
+      "Opacity": 1.0,
+      "NodeMinWidth": 120
     }
   }
   )");
@@ -93,7 +94,7 @@ int main(int argc, char *argv[])
     DataFlowGraphModel dataFlowGraphModel(registry);
     
     DataFlowGraphicsScene scene(dataFlowGraphModel);
-
+    scene.setOrientation(Qt::Vertical);
     GraphicsView view(&scene);
 
     view.setWindowTitle("Style example");

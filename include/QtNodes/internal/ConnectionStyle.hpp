@@ -4,6 +4,7 @@
 
 #include "Export.hpp"
 #include "Style.hpp"
+#include <QColor>
 
 namespace QtNodes {
 
@@ -45,6 +46,26 @@ public:
     /// @brief 输出箭头样式是否开启
     /// @return true:开启，false:关闭
     bool outArrow() const;
+
+     void constructionColor(const QColor &color);
+
+    void selectedColor(const QColor &color);
+
+    void selectedHaloColor(const QColor &color);
+
+    void hoveredColor(const QColor &color);
+
+    void lineWidth(float width);
+
+    void constructionLineWidth(float width);
+
+    void pointDiameter(float diameter);
+
+    void useDataDefinedColors(bool use);
+
+    void inArraw(bool show);
+
+    void outArrow(bool show);
 
 private:
     QColor ConstructionColor;

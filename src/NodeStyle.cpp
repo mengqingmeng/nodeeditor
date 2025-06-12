@@ -18,6 +18,11 @@ inline void initResources()
 }
 
 NodeStyle::NodeStyle()
+    : PenWidth(-1.0f)
+    , HoveredPenWidth(-1.0f)
+    , ConnectionPointDiameter(-1.0f)
+    , Opacity(-1.0f)
+    , NodeMinWidth(-1)
 {
     // Explicit resources inialization for preventing the static initialization
     // order fiasco: https://isocpp.org/wiki/faq/ctors#static-init-order
@@ -28,6 +33,10 @@ NodeStyle::NodeStyle()
 }
 
 NodeStyle::NodeStyle(QString jsonText)
+    : PenWidth(-1.0f), HoveredPenWidth(-1.0f)
+    , ConnectionPointDiameter(-1.0f)
+    , Opacity(-1.0f)
+    , NodeMinWidth(-1)
 {
     loadJsonText(jsonText);
 }
@@ -66,7 +75,7 @@ void NodeStyle::setNodeStyle(QString jsonText)
                 rgb.push_back((*it).toInt()); \
             } \
             variable = QColor(rgb[0], rgb[1], rgb[2]); \
-        } else { \
+        }else{ \
             variable = QColor(valueRef.toString()); \
         } \
     }
@@ -84,6 +93,18 @@ void NodeStyle::setNodeStyle(QString jsonText)
     }
 
 #define NODE_STYLE_WRITE_FLOAT(values, variable) \
+    { \
+        values[#variable] = variable; \
+    }
+
+#define NODE_STYLE_READ_INT(values, variable) \
+    { \
+        auto valueRef = values[#variable]; \
+        NODE_STYLE_CHECK_UNDEFINED_VALUE(valueRef, variable) \
+        variable = valueRef.toInt(); \
+    }
+
+#define NODE_STYLE_WRITE_INT(values, variable) \
     { \
         values[#variable] = variable; \
     }
@@ -113,6 +134,8 @@ void NodeStyle::loadJson(QJsonObject const &json)
     NODE_STYLE_READ_FLOAT(obj, ConnectionPointDiameter);
 
     NODE_STYLE_READ_FLOAT(obj, Opacity);
+
+    NODE_STYLE_READ_INT(obj, NodeMinWidth);
 }
 
 QJsonObject NodeStyle::toJson() const
@@ -138,6 +161,8 @@ QJsonObject NodeStyle::toJson() const
     NODE_STYLE_WRITE_FLOAT(obj, ConnectionPointDiameter);
 
     NODE_STYLE_WRITE_FLOAT(obj, Opacity);
+
+    NODE_STYLE_WRITE_INT(obj, NodeMinWidth);
 
     QJsonObject root;
     root["NodeStyle"] = obj;
