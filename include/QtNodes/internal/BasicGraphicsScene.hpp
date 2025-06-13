@@ -110,7 +110,7 @@ Q_SIGNALS:
 
     void nodeMoved(NodeId const nodeId, QPointF const &newLocation);
 
-    void nodeClicked(NodeId const nodeId);
+    void nodeClicked(NodeId const nodeId,QString const uniqueName);
 
     void nodeSelected(NodeId const nodeId);
 
@@ -154,7 +154,7 @@ public Q_SLOTS:
 
     void onNodeUpdated(NodeId const nodeId);
 
-    void onNodeClicked(NodeId const nodeId);
+    void onNodeClicked(NodeId const nodeId,QString const uniqueName);
 
     void onModelReset();
 

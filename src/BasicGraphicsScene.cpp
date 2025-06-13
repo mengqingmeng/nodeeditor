@@ -299,7 +299,7 @@ void BasicGraphicsScene::onNodeUpdated(NodeId const nodeId)
     }
 }
 
-void BasicGraphicsScene::onNodeClicked(NodeId const nodeId)
+void BasicGraphicsScene::onNodeClicked(NodeId const nodeId, QString const uniqueName)
 {
     if (_nodeDrag) {
         Q_EMIT nodeMoved(nodeId, _graphModel.nodeData(nodeId, NodeRole::Position).value<QPointF>());

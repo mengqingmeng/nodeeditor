@@ -111,8 +111,10 @@ int main(int argc, char *argv[])
   }
   )");
 
+    // GraphModel
     DataFlowModel graphModel(registerDataModels());
     
+    // GraphicsScene
     auto scene = new DataFlowGraphicsScene(graphModel);
 
     scene->setOrientation(Qt::Vertical);
@@ -145,8 +147,8 @@ int main(int argc, char *argv[])
         graphModel.setDetachPossible(state == Qt::Checked);
     });
 
-    QObject::connect(scene, &DataFlowGraphicsScene::nodeClicked, [&](NodeId const nodeId) {
-        qDebug() << "node clicked:" << nodeId;    
+    QObject::connect(scene, &DataFlowGraphicsScene::nodeClicked, [&](NodeId const nodeId,QString const uniqueName) {
+        qDebug() << "node clicked,ID:" << nodeId << " name:" << uniqueName;    
     });
 
     l->addWidget(groupBox);

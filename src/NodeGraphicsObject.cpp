@@ -300,8 +300,8 @@ void NodeGraphicsObject::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
     // position connections precisely after fast node move
     moveConnections();
-
-    nodeScene()->nodeClicked(_nodeId);
+    QString uniqueName = _graphModel.nodeData<QString>(_nodeId, NodeRole::Type);
+    nodeScene()->nodeClicked(_nodeId, uniqueName);
 }
 
 void NodeGraphicsObject::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
