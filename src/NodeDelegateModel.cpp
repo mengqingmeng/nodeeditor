@@ -107,4 +107,14 @@ void NodeDelegateModel::setPortTransTypes(const PortId &portId,const QSet<PortTr
     }
 }
 
+QWidget* NodeDelegateModel::customConfigWidget() {
+    return nullptr;
+}
+
+
+QWidget* NodeDelegateModel::customResultWidget() {
+    return nullptr;
+}
+
+
 } // namespace QtNodes

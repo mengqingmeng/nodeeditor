@@ -111,8 +111,10 @@ int main(int argc, char *argv[])
   }
   )");
 
+    auto reigster = registerDataModels();
+
     // GraphModel
-    DataFlowModel graphModel(registerDataModels());
+    DataFlowModel graphModel(reigster);
     
     // GraphicsScene
     auto scene = new DataFlowGraphicsScene(graphModel);
@@ -148,7 +150,14 @@ int main(int argc, char *argv[])
     });
 
     QObject::connect(scene, &DataFlowGraphicsScene::nodeClicked, [&](NodeId const nodeId,QString const uniqueName) {
-        qDebug() << "node clicked,ID:" << nodeId << " name:" << uniqueName;    
+        std::unique_ptr<NodeDelegateModel> model = reigster->create(uniqueName);
+
+        QString caption = model->caption(); 
+        QString category = model->category();
+
+        QWidget* configWidget = model->customConfigWidget();
+        QWidget* resultWidget = model->customResultWidget();
+
     });
 
     l->addWidget(groupBox);

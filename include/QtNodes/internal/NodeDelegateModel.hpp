@@ -112,6 +112,14 @@ public:
    */
     virtual QWidget *embeddedWidget() = 0;
 
+    /// @brief 自定义配置组件
+    /// @return
+    virtual QWidget *customConfigWidget();
+
+    /// @brief
+    /// @return
+    virtual QWidget *customResultWidget();
+
     virtual bool resizable() const { return false; }
 
 public Q_SLOTS:
